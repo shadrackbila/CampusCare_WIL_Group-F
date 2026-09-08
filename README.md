@@ -1,4 +1,4 @@
-# WIL-Project-Group-F
+# CampusCare_WIL_Group-F
 
 ## Description
 Final year group project for group F ,a monorepo containing a Flutter mobile app and an ASP.NET Core backend that both connect to the same shared supabase database.
