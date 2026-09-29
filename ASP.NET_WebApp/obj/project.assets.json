@@ -8,19 +8,19 @@
     "net10.0": []
   },
   "packageFolders": {
-    "/Users/work/.nuget/packages/": {}
+    "C:\\Users\\shadr\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/work/Desktop/WIL/WIL-Project-Group-F/ASP.NET_WebApp/ASP.NET_WebApp.csproj",
+      "projectUniqueName": "C:\\Users\\shadr\\OneDrive\\Desktop\\wil\\CampusCare_WIL_Group-F\\ASP.NET_WebApp\\ASP.NET_WebApp.csproj",
       "projectName": "ASP.NET_WebApp",
-      "projectPath": "/Users/work/Desktop/WIL/WIL-Project-Group-F/ASP.NET_WebApp/ASP.NET_WebApp.csproj",
-      "packagesPath": "/Users/work/.nuget/packages/",
-      "outputPath": "/Users/work/Desktop/WIL/WIL-Project-Group-F/ASP.NET_WebApp/obj/",
+      "projectPath": "C:\\Users\\shadr\\OneDrive\\Desktop\\wil\\CampusCare_WIL_Group-F\\ASP.NET_WebApp\\ASP.NET_WebApp.csproj",
+      "packagesPath": "C:\\Users\\shadr\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\shadr\\OneDrive\\Desktop\\wil\\CampusCare_WIL_Group-F\\ASP.NET_WebApp\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/work/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\shadr\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net10.0"
@@ -70,7 +70,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/10.0.400/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.401/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.AspNetCore": "(,10.0.32767]",
           "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",
