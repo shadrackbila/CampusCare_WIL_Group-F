@@ -12,9 +12,17 @@
     <link rel="stylesheet" href="~/lib/fontawesome/css/all.min.css" asp-append-version="true" />
 </head>
 
-<body class="bg-[#F8F9FF]">
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+<body class="bg-[#F8F9FF] flex justify-center items-center flex-col">
+    <header class=" w-full">
+        <nav
+            class="w-full navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3 ">
+
+            <div class="ml-10 ">
+                <button onclick="openSideBar()">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+
             <div class="w-full flex justify-end items-center px-4 py-2">
                 <div class="flex justify-center items-center gap-4">
 
@@ -37,20 +45,21 @@
             </div>
         </nav>
     </header>
-    <div class="w-full">
+    <div class="w-full max-w-7xl">
         <main role="main" class="pb-3 m-4">
             @RenderBody()
         </main>
     </div>
 
     <footer class="w-full">
-        <div class="m-4">
-            &copy; 2026 - ASP.NET_WebApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        <div class="m-4 max-w-7xl">
+            @* &copy; 2026 - ASP.NET_WebApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> *@
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/sideBar.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 

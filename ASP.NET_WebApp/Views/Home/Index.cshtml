@@ -4,11 +4,11 @@ ViewData["Title"] = "Home Page";
 
 <div class="w-full">
     <section class="w-full">
-        <h1 class="text-[30px] font-bold text-[#001C37] mb-1">Reports & Analytics</h1>
+        <h1 class="text-[30px] font-bold text-[#001C37] mb-1">Dashboard</h1>
 
         <div class="flex justify-between items-center">
             <div class="w-full">
-                <p class="text-[#43474F] font-normal text-[15px] w-full md:w-[35%]">View system reports and key
+                <p class="text-[#43474F] font-normal text-[15px] w-full lg:w-[35%]">View system reports and key
                     analytics
                     insights.</p>
             </div>
@@ -30,11 +30,14 @@ ViewData["Title"] = "Home Page";
     </section>
 
     <!-- Stats -->
-    <section class="w-full mt-10">
-        <div class="grid grid-cols-4">
+    <section class="w-full mt-10 flex justify-center items-center">
+        <div class="grid  md:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
 
+            <!-- Students -->
             <div class="flex justify-center items-center p-4 rounded-2xl bg-white border border-gray-400 gap-2">
-                <img src="" alt="">
+                <div class="bg-[#E5EEFF] rounded-full p-3">
+                    <i class="fa-solid fa-graduation-cap text-2xl text-[#003366]"></i>
+                </div>
                 <div>
                     <p class="text-[#001C37] text-[24px] font-bold">1234</p>
                     <p class="text-[#43474F] ">Total students</p>
@@ -42,9 +45,140 @@ ViewData["Title"] = "Home Page";
             </div>
 
 
-            <div></div>
-            <div></div>
-            <div></div>
+            <!-- Practitioners -->
+            <div class="flex justify-center items-center p-4 rounded-2xl bg-white border border-gray-400 gap-2">
+                <div class="bg-[#ECFDF5] rounded-full p-3">
+                    <i class="fa-solid fa-kit-medical text-2xl text-[#047857]"></i>
+                </div>
+                <div>
+                    <p class="text-[#001C37] text-[24px] font-bold">18</p>
+                    <p class="text-[#43474F] ">Total practitioners</p>
+                </div>
+            </div>
+
+            <!-- Educators -->
+            <div class="flex justify-center items-center p-4 rounded-2xl bg-white border border-gray-400 gap-2">
+                <div class="bg-[#FAF5FF] rounded-full p-3">
+                    <i class="fa-solid fa-user-group text-2xl text-[#7E22CE]"></i>
+                </div>
+                <div>
+                    <p class="text-[#001C37] text-[24px] font-bold">12</p>
+                    <p class="text-[#43474F] ">Peer educators</p>
+                </div>
+            </div>
+
+            <!-- Appointments -->
+            <div class="flex justify-center items-center p-4 rounded-2xl bg-white border border-gray-400 gap-2">
+                <div class="bg-[#F0F9FF] rounded-full p-3">
+                    <i class="fa-solid fa-calendar-check text-2xl text-[#003366]"></i>
+                </div>
+                <div>
+                    <p class="text-[#001C37] text-[24px] font-bold">1234</p>
+                    <p class="text-[#43474F] ">Appointments</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Stats Visualiser -->
+    <section class="w-full mt-10 flex justify-center items-center">
+        <div class="grid md:grid-cols-2 w-full gap-3">
+
+            <!-- Appointment trend -->
+            <div class="bg-white w-full border border-gray-400 rounded-2xl p-4">
+
+                <div class="w-full flex justify-between items-center">
+                    <div class="w-full">
+                        <h4 class="text-[#001C37] font-semibold ">Appointment Trend</h4>
+                        <p class="text-[#43474F] text-sm">Daily booked counseling sessions</p>
+                    </div>
+
+                    <div class="w-full flex justify-end items-center">
+                        <div
+                            class="flex justify-center items-center font-medium bg-[#EFF4FF] py-2 px-4 rounded-lg gap-2  text-[#43474F]">
+                            <p class="text-[12px]">Last 7 days</p>
+                            <i class="fa-solid fa-chevron-down text-[10px]"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Graph -->
+                <div class="mt-3">
+                    <img class="w-full" src="~/assets/svj/lineGraph.svg" alt="">
+                </div>
+            </div>
+
+
+            <!-- Appointment status -->
+            <div class="bg-white w-full border border-gray-400 rounded-2xl p-4">
+
+                <div class="w-full flex justify-between items-center">
+                    <div class="w-full">
+                        <h4 class="text-[#001C37] font-semibold ">Appointment Status</h4>
+                    </div>
+
+                    <div class="w-full flex justify-end items-center">
+                        <div
+                            class="flex justify-center items-center font-medium bg-[#EFF4FF] py-2 px-4 rounded-lg gap-2  text-[#43474F]">
+                            <p class="text-[12px]">All sessions</p>
+                            <i class="fa-solid fa-chevron-down text-[10px]"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Graph -->
+                <div class="mt-3">
+                    <img class="w-full" src="~/assets/svj/pieChart.svg" alt="">
+                </div>
+            </div>
+
+            <!-- Check in summary -->
+            <div class="bg-white w-full border border-gray-400 rounded-2xl p-4">
+
+                <div class="w-full flex justify-between items-center">
+                    <div class="w-full">
+                        <h4 class="text-[#001C37] font-semibold ">Wellness Check-In Summary</h4>
+                    </div>
+
+                    <div class="w-full flex justify-end items-center">
+                        <div
+                            class="flex justify-center items-center font-medium bg-[#EFF4FF] py-2 px-4 rounded-lg gap-2  text-[#43474F]">
+                            <p class="text-[12px]">Average score (0 - 5)</p>
+                            <i class="fa-solid fa-chevron-down text-[10px]"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Graph -->
+                <div class="mt-3">
+                    <img class="w-full" src="~/assets/svj/barChart.svg" alt="">
+                </div>
+            </div>
+
+            <!-- Top Support Themes -->
+            <div class="bg-white w-full border border-gray-400 rounded-2xl p-4">
+
+                <div class="w-full flex justify-between items-center">
+                    <div class="w-full">
+                        <h4 class="text-[#001C37] font-semibold ">Top Support Themes</h4>
+                    </div>
+
+                    <div class="w-full flex justify-end items-center">
+                        <div
+                            class="flex justify-center items-center font-medium bg-[#EFF4FF] py-2 px-4 rounded-lg gap-2  text-[#43474F]">
+                            <p class="text-[12px]">Primary concerns</p>
+                            <i class="fa-solid fa-chevron-down text-[10px]"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Graph -->
+                <div class="mt-3">
+                    <img class="w-full" src="~/assets/svj/ranges.svg" alt="">
+                </div>
+            </div>
+
 
         </div>
     </section>
