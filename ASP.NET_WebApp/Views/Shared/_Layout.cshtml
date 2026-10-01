@@ -12,14 +12,18 @@
     <link rel="stylesheet" href="~/lib/fontawesome/css/all.min.css" asp-append-version="true" />
 </head>
 
-<body class="bg-[#F8F9FF] flex justify-center items-center flex-col">
-    <header class=" w-full">
+<body class="bg-[#F8F9FF] flex justify-center items-center flex-col relative ">
+    <header class=" w-full sticky top-0 z-10">
         <nav
-            class="w-full navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3 ">
+            class="w-full navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow  ">
 
-            <div class="ml-10 ">
-                <button onclick="openSideBar()">
+            <div class="ml-10 w-full">
+                <button id="openBtn" onclick="sideBar(true)">
                     <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <button id="closeBtn" class="hidden" onclick="sideBar(false)">
+                    <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
 
@@ -45,17 +49,34 @@
             </div>
         </nav>
     </header>
-    <div class="w-full max-w-7xl">
-        <main role="main" class="pb-3 m-4">
-            @RenderBody()
-        </main>
+
+    <div class="w-full  flex  ">
+        @* ------------------------------ *@
+        @* Side bar *@
+        @* ------------------------------ *@
+        <div id="sidebar"
+             class="bg-[#001E40] w-64 sticky top-[var(--header-h,64px)] self-start h-[calc(100vh-64px)] shrink-0 hidden">
+            yabababababab
+        </div>
+
+        @* ------------------------------ *@
+        @* Content *@
+        @* ------------------------------ *@
+        <div class="w-full max-w-7xl mx-auto">
+            <main role="main" class="pb-3 m-4">
+                @RenderBody()
+            </main>
+
+            <footer class="w-full bg-slate-600">
+                <div class="m-4 max-w-7xl">
+                    @* &copy; 2026 - ASP.NET_WebApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> *@
+                </div>
+            </footer>
+        </div>
+   
     </div>
 
-    <footer class="w-full">
-        <div class="m-4 max-w-7xl">
-            @* &copy; 2026 - ASP.NET_WebApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> *@
-        </div>
-    </footer>
+ 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
