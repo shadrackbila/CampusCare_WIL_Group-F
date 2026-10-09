@@ -13,7 +13,7 @@
 </head>
 
 <body class="bg-[#F8F9FF] flex justify-center items-center flex-col relative ">
-    <header class=" w-full sticky top-0 z-10">
+    <header class=" w-full sticky top-0 z-50">
         <nav
             class="w-full navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow  ">
 
@@ -55,8 +55,49 @@
         @* Side bar *@
         @* ------------------------------ *@
         <div id="sidebar"
-             class="bg-[#001E40] w-64 sticky top-[var(--header-h,64px)] self-start h-[calc(100vh-64px)] shrink-0 hidden">
-            yabababababab
+             class="bg-[#001E40] w-64 sticky top-[var(--header-h,64px)] self-start h-[calc(100vh-64px)] shrink-0 hidden py-10 px-3">
+            <div class="w-full bg-white">
+                <img class="w-[50%]" src="~/assets/imgs/cut_logo.png" alt="Logo">
+            </div>
+
+            <div class="w-full">
+                <ul class="w-full flex flex-col items-start justify-center  mt-10 text-white">
+
+                    <a class="hover:bg-[#007BB9] w-full my-1 rounded-lg" href="/">
+                        <li class="w-full flex justify-start items-center gap-2 my-2 pl-3">
+                            <i class="fa-solid fa-table-cells-large text-2xl "></i>
+                            <p class="text-base">Dashboard</p>
+                        </li>
+                    </a>
+
+                    <a class="hover:bg-[#007BB9] w-full my-1 rounded-lg" asp-controller="Practitioners"
+                       asp-action="Index">
+                        <li class="w-full flex justify-start items-center gap-2 my-2 pl-3">
+                            <i class="fa-solid fa-user-doctor text-2xl w-8 text-center"></i>
+                            <p class="text-base">Practitioners</p>
+                        </li>
+                    </a>
+
+                    <a class="hover:bg-[#007BB9] w-full my-1 rounded-lg" asp-controller="Appointments"
+                       asp-action="Index">
+                        <li class="w-full flex justify-start items-center gap-2 my-2 pl-3">
+                            <i class="fa-solid fa-calendar-check text-2xl w-8 text-center"></i>
+                            <p class="text-base">Appointment</p>
+                        </li>
+                    </a>
+
+                    <a class="hover:bg-[#007BB9] w-full my-1 rounded-lg" asp-controller="Students" asp-action="Index">
+                        <li class="w-full flex justify-start items-center gap-2 my-2 pl-3">
+                            <i class="fa-solid fa-user-graduate text-2xl w-8 text-center"></i>
+                            <p class="text-base">Students</p>
+                        </li>
+                    </a>
+
+
+                </ul>
+
+                <div></div>
+            </div>
         </div>
 
         @* ------------------------------ *@

@@ -1,0 +1,50 @@
+@{
+    ViewData["Title"] = "Students Page";
+}
+
+<div class="w-full">
+    <section class="w-full">
+        <h1 class="text-[30px] font-bold text-[#001C37] mb-1">Students</h1>
+
+        <div class="flex justify-between items-center">
+            <p class="text-[#43474F] font-normal text-[15px] w-full lg:w-[35%]">
+                Search students, review their appointment history and keep their details up to date.
+            </p>
+        </div>
+    </section>
+
+    <section class="bg-white border border-gray-400 w-full mt-10 flex justify-center items-center p-4 rounded-2xl">
+        <table class="w-full min-w-[640px] text-left text-sm">
+            <thead class="bg-gray-50 text-[#43474F] border-y border-gray-400">
+                <tr class="uppercase">
+                    <th class="px-4 py-3 font-semibold">Student</th>
+                    <th class="px-4 py-3 font-semibold">Student number</th>
+                    <th class="px-4 py-3 font-semibold">Assigned practitioner</th>
+                    <th class="px-4 py-3 font-semibold">File/Client number</th>
+                    <th class="px-4 py-3 font-semibold">Manage</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+                <tr class="group cursor-pointer  hover:bg-[#CFD4E0] transition-colors duration-200"
+                    data-href="@Url.Action("GetStudent", "Students", new { id = "ha" })">
+                    <td class="px-4 py-3">Dr. Jane Doe</td>
+                    <td class="px-4 py-3">1234567</td>
+                    <td class="px-4 py-3 whitespace-nowrap">
+                        <span class="text-[#001E40] font-medium">Mr Sethole</span>
+                        <span class="text-gray-500">| Therapist</span>
+                    </td>
+                    <td class="px-4 py-3">9237493249</td>
+                    <td class="px-4 py-3">
+                        <div class="row-actions flex justify-center items-center bg-white p-2 rounded-2xl gap-6">
+                            <a href="" class="text-[#007BB9] hover:text-[#005f8f]" aria-label="Edit practitioner">
+                                <i class="fa-solid fa-pen-to-square text-base"></i>
+                            </a>
+            
+                        </div>
+                    </td>
+                    
+                </tr>
+            </tbody>
+        </table>
+    </section>
+</div>

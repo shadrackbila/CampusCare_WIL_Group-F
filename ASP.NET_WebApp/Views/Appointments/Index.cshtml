@@ -1,0 +1,58 @@
+@{
+    ViewData["Title"] = "Appointments";
+}
+
+<div class="w-full">
+    <section class="w-full">
+        <h1 class="text-[30px] font-bold text-[#001C37] mb-1">Appointments</h1>
+
+        <div class="flex justify-between items-center">
+            <p class="text-[#43474F] font-normal text-[15px] w-full lg:w-[50%]">
+                Search appointments, check their status and keep schedules up to date.
+            </p>
+        </div>
+    </section>
+
+    <section class="bg-white border border-gray-400 w-full mt-10 p-4 rounded-2xl overflow-x-auto">
+        <table class="w-full min-w-[640px] text-left text-sm">
+            <thead class="bg-gray-50 text-[#43474F]  border-y border-gray-400">
+                <tr class="uppercase">
+                    <th class="px-4 py-3 font-semibold">Student</th>
+                    <th class="px-4 py-3 font-semibold">Student number</th>
+                    <th class="px-4 py-3 font-semibold">Assigned Practitioner</th>
+                    <th class="px-4 py-3 font-semibold">Scheduled Date</th>
+                    <th class="px-4 py-3 font-semibold">Type</th>
+                    <th class="px-4 py-3 font-semibold">Status</th>
+                    <th class="px-4 py-3 font-semibold text-center">Manage</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+                <tr class="group cursor-pointer hover:bg-[#CFD4E0] transition-colors duration-200"
+                    data-href="@Url.Action("GetStudent", "Students", new { id = "ha" })">
+                    <td class="px-4 py-3">Lerato Molefe</td>
+                    <td class="px-4 py-3">223874833</td>
+                    <td class="px-4 py-3 whitespace-nowrap">
+                        <span class="text-[#001E40] font-medium">Mr Sethole</span>
+                        <span class="text-gray-500">| Therapist</span>
+                    </td>
+                    <td class="px-4 py-3 whitespace-nowrap">
+                        <span class="text-[#001E40] font-medium">12 Sept 2026</span>
+                        <span class="text-gray-500">| 10:27</span>
+                    </td>
+                    <td class="px-4 py-3">Online</td>
+                    <td class="px-4 py-3">Booked</td>
+                    <td class="px-4 py-3">
+                        <div class="row-actions flex justify-center items-center bg-white p-2 rounded-2xl gap-6">
+                            <a href="" class="text-[#007BB9] hover:text-[#005f8f]" aria-label="Edit appointment">
+                                <i class="fa-solid fa-pen-to-square text-base"></i>
+                            </a>
+                            <a href="" class="text-red-500 hover:text-red-700" aria-label="Delete appointment">
+                                <i class="fa-solid fa-trash text-base"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+</div>
