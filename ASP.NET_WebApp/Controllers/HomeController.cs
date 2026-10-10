@@ -1,11 +1,13 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using ASP.NET_WebApp.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ASP.NET_WebApp.Controllers;
 
 public class HomeController : Controller
 {
+     [Authorize]
     public IActionResult Index()
     {
         return View();

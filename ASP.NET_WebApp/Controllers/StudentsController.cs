@@ -1,27 +1,27 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using ASP.NET_WebApp.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ASP.NET_WebApp.Controllers;
 
 public class StudentsController : Controller
 {
     [HttpGet]
+    [Authorize]
     public IActionResult Index()
     {
         return View();
     }
 
+    [Authorize]
     public IActionResult GetStudent(string id)
     {
 
         return View("StudentInfo");
     }
 
-    public IActionResult Privacy()
-    {
-        return View();
-    }
+
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()

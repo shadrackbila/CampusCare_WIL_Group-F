@@ -1,7 +1,34 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Supabase;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Account/Login"; 
+        
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(30); 
+        options.SlidingExpiration = true; 
+    });
+
+var supabaseUrl = builder.Configuration["Supabase:Url"];
+var supabaseKey = builder.Configuration["Supabase:AnonKey"];
+
+var options = new SupabaseOptions
+{
+    AutoRefreshToken = true,
+    AutoConnectRealtime = false
+};
+
+builder.Services.AddSingleton(provider => 
+{
+    var client = new Client(supabaseUrl, supabaseKey, options);
+    return client;
+});
+
 
 var app = builder.Build();
 
@@ -16,6 +43,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 
+app.UseAuthentication(); 
 app.UseAuthorization();
 
 app.MapStaticAssets();
