@@ -55,7 +55,7 @@ public class AccountController : Controller
         }
         catch (Exception ex)
         {
-            ModelState.AddModelError("", "Invalid username or password.");
+            ModelState.AddModelError("", ex.Message);
         }
 
         return View();

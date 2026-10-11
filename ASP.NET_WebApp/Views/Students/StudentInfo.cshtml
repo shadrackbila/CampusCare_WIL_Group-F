@@ -1,3 +1,5 @@
+@model StudentsModel
+
 @{
     ViewData["Title"] = "Student Info";
 }
@@ -83,57 +85,62 @@
                 <div class="mt-4">
                     <div class="mt-2">
                         <span class="text-[#0B1C30] font-bold">Student Number :</span>
-                        <span class="text-gray-500">18871172</span>
+                        <span class="text-gray-500">@Model.StudentNumber</span>
                     </div>
 
                     <div class="mt-2">
                         <span class="text-[#0B1C30] font-bold">Surname :</span>
-                        <span class="text-gray-500">Molefe</span>
+                        <span class="text-gray-500">@Model.Surname</span>
                     </div>
 
                     <div class="mt-2">
                         <span class="text-[#0B1C30] font-bold">Fist Name :</span>
-                        <span class="text-gray-500">Lerato</span>
+                        <span class="text-gray-500">@Model.FirstName</span>
                     </div>
 
                     <div class="mt-2">
                         <span class="text-[#0B1C30] font-bold">Prefferd Name :</span>
-                        <span class="text-gray-500">Palisa</span>
+                        <span class="text-gray-500">@Model.PreferredName</span>
                     </div>
 
                     <div class="mt-2">
                         <span class="text-[#0B1C30] font-bold">Date of Birth :</span>
-                        <span class="text-gray-500">03 / 05 / 1999</span>
+                        <span class="text-gray-500">@Model.DateOfBirth.ToString("dd MMM yyyy")</span>
                     </div>
 
                     <div class="mt-2">
                         <span class="text-[#0B1C30] font-bold">Age :</span>
-                        <span class="text-gray-500">27</span>
+                        <span class="text-gray-500">@Model.Age</span>
                     </div>
 
                     <div class="mt-2">
                         <span class="text-[#0B1C30] font-bold">Gender :</span>
-                        <span class="text-gray-500">Female</span>
+                        <span class="text-gray-500">@Model.Gender</span>
                     </div>
 
                     <div class="mt-2">
                         <span class="text-[#0B1C30] font-bold">ID / Passport Number :</span>
-                        <span class="text-gray-500">8394839583374</span>
+                        <span class="text-gray-500">@Model.IdOrPassportNumber</span>
                     </div>
 
                     <div class="mt-2">
                         <span class="text-[#0B1C30] font-bold">Nationality :</span>
-                        <span class="text-gray-500">South African</span>
+                        <span class="text-gray-500">@Model.Nationality</span>
                     </div>
 
                     <div class="mt-2">
                         <span class="text-[#0B1C30] font-bold">Home Language :</span>
-                        <span class="text-gray-500">Afrikaans</span>
+                        <span class="text-gray-500">@Model.HomeLanguage</span>
                     </div>
 
                     <div class="mt-2">
                         <span class="text-[#0B1C30] font-bold">Other Language(s) :</span>
-                        <span class="text-gray-500">Venda</span>
+                        @{
+                            var otherLangs = Model.OtherLanguages is { Length: > 0 }
+                                ? string.Join(", ", Model.OtherLanguages)
+                                : "None";
+                        }
+                        <span class="text-gray-500">@otherLangs</span>
                     </div>
             
                 </div>
@@ -159,38 +166,34 @@
 
                 <div class="mt-4">
                     <div class="mt-2">
-                        <span class="text-[#0B1C30] font-bold">Surname :</span>
-                        <span class="text-gray-500">Zakes</span>
+                        <span class="text-[#0B1C30] font-bold">Full Name :</span>
+                        <span class="text-gray-500">@Model.ContactPerson?.FullName</span>
                     </div>
 
-                    <div class="mt-2">
-                        <span class="text-[#0B1C30] font-bold">First Name :</span>
-                        <span class="text-gray-500">Tom</span>
-                    </div>
 
                     <div class="mt-2">
                         <span class="text-[#0B1C30] font-bold">Relationship :</span>
-                        <span class="text-gray-500">Grandfather</span>
+                        <span class="text-gray-500">@Model.ContactPerson?.Relationship</span>
                     </div>
 
                     <div class="mt-2">
                         <span class="text-[#0B1C30] font-bold">Cellphone Number :</span>
-                        <span class="text-gray-500">+27 123456789</span>
+                        <span class="text-gray-500">@Model.ContactPerson?.CellphoneNumber</span>
                     </div>
 
                     <div class="mt-2">
                         <span class="text-[#0B1C30] font-bold">Alternate Number :</span>
-                        <span class="text-gray-500">+27 987654321</span>
+                        <span class="text-gray-500">@Model.ContactPerson?.AlternateNumber</span>
                     </div>
 
                     <div class="mt-2">
                         <span class="text-[#0B1C30] font-bold">Email Address :</span>
-                        <span class="text-gray-500">granpaZakes@gmail.com</span>
+                        <span class="text-gray-500">@Model.ContactPerson?.EmailAddress</span>
                     </div>
 
                     <div class="mt-2">
                         <span class="text-[#0B1C30] font-bold">Residential Address :</span>
-                        <span class="text-gray-500">20 President Brand street, willow, Bloemfontein</span>
+                        <span class="text-gray-500">@Model.ContactPerson?.ResidentialAddress</span>
                     </div>
             
                 </div>
@@ -217,27 +220,32 @@
                 <div class="mt-4">
                     <div class="mt-2">
                         <span class="text-[#0B1C30] font-bold">Faculty :</span>
-                        <span class="text-gray-500">FEBIT</span>
+                        <span class="text-gray-500">@Model.AcademicInfo?.Faculty</span>
                     </div>
 
                     <div class="mt-2">
                         <span class="text-[#0B1C30] font-bold">Department :</span>
-                        <span class="text-gray-500">Diploma in Information Technology</span>
+                        <span class="text-gray-500">@Model.AcademicInfo?.Department</span>
+                    </div>
+
+                    <div class="mt-2">
+                        <span class="text-[#0B1C30] font-bold">Qualification :</span>
+                        <span class="text-gray-500">@Model.AcademicInfo?.Qualification</span>
                     </div>
 
                     <div class="mt-2">
                         <span class="text-[#0B1C30] font-bold">Year of study :</span>
-                        <span class="text-gray-500">4th</span>
+                        <span class="text-gray-500">@Model.AcademicInfo?.YearOfStudy</span>
                     </div>
 
                     <div class="mt-2">
                         <span class="text-[#0B1C30] font-bold">Mode of Study :</span>
-                        <span class="text-gray-500">Full-Time</span>
+                        <span class="text-gray-500">@Model.AcademicInfo?.ModeOfStudy</span>
                     </div>
 
                     <div class="mt-2">
                         <span class="text-[#0B1C30] font-bold">Campus :</span>
-                        <span class="text-gray-500">Bloemfontein</span>
+                        <span class="text-gray-500">@Model.AcademicInfo?.Campus</span>
                     </div>
             
                 </div>
@@ -263,43 +271,46 @@
 
                 <div class="mt-4">
                     <div class="mt-4">
-                        <span class="text-[#0B1C30] font-bold">If CUT accomodation</span>
+                        <span class="text-[#0B1C30] font-bold">Residence Type :</span>
+                        <span class="text-gray-500">@Model.ResidenceInfo?.ResidenceType</span>
                     </div>
 
-                    <div class="mt-2">
-                        <span class="text-[#0B1C30] font-bold">Residence Name :</span>
-                        <span class="text-gray-500">Mannhuis</span>
-                    </div>
+                    @if (@Model.ResidenceInfo?.ResidenceType == "cut")
+                    {
+                        <div class="mt-2">
+                            <span class="text-[#0B1C30] font-bold">Residence Name :</span>
+                            <span class="text-gray-500">@Model.ResidenceInfo?.ResidenceName</span>
+                        </div>
 
-                    <div class="mt-2 ">
-                        <span class="text-[#0B1C30] font-bold">Room Number :</span>
-                        <span class="text-gray-500">222</span>
-                    </div>
+                        <div class="mt-2 ">
+                            <span class="text-[#0B1C30] font-bold">Room Number :</span>
+                            <span class="text-gray-500">@Model.ResidenceInfo?.RoomNumber</span>
+                        </div>
+                    }
+                    else
+                    {
+                    
 
-                    <div class="mt-4">
-                        <span class="text-[#0B1C30] font-bold">If private accomodation</span>
-                    </div>
+                        <div class="mt-2">
+                            <span class="text-[#0B1C30] font-bold">Address :</span>
+                            <span class="text-gray-500">@Model.ResidenceInfo?.PrivateAddress</span>
+                        </div>
 
-                    <div class="mt-2">
-                        <span class="text-[#0B1C30] font-bold">Address :</span>
-                        <span class="text-gray-500">98Victoria Road, Willows</span>
-                    </div>
+                        <div class="mt-2">
+                            <span class="text-[#0B1C30] font-bold">City :</span>
+                            <span class="text-gray-500">@Model.ResidenceInfo?.City</span>
+                        </div>
 
-                    <div class="mt-2">
-                        <span class="text-[#0B1C30] font-bold">City :</span>
-                        <span class="text-gray-500">Bloemfontein</span>
-                    </div>
+                        <div class="mt-2">
+                            <span class="text-[#0B1C30] font-bold">Postal Code :</span>
+                            <span class="text-gray-500">@Model.ResidenceInfo?.PostalCode</span>
+                        </div>
 
-                    <div class="mt-2">
-                        <span class="text-[#0B1C30] font-bold">Postal Code :</span>
-                        <span class="text-gray-500">9300</span>
-                    </div>
-
-                    <div class="mt-2">
-                        <span class="text-[#0B1C30] font-bold">Province :</span>
-                        <span class="text-gray-500">Free State</span>
-                    </div>
-            
+                        <div class="mt-2">
+                            <span class="text-[#0B1C30] font-bold">Province :</span>
+                            <span class="text-gray-500">@Model.ResidenceInfo?.Province</span>
+                        </div>
+                    }
                 </div>
 
             

@@ -2,12 +2,20 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using ASP.NET_WebApp.Models;
 using Microsoft.AspNetCore.Authorization;
+using Supabase;
 
 namespace ASP.NET_WebApp.Controllers;
 
 public class HomeController : Controller
 {
-     [Authorize]
+
+    private readonly Client _supabase;
+    public HomeController(Client Supabase)
+    {
+        _supabase = Supabase;
+    }
+
+    [Authorize]
     public IActionResult Index()
     {
         return View();

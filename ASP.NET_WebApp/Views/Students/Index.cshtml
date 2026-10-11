@@ -1,3 +1,5 @@
+@model List<StudentsModel>
+
 @{
     ViewData["Title"] = "Students Page";
 }
@@ -25,25 +27,38 @@
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-200">
-                <tr class="group cursor-pointer  hover:bg-[#CFD4E0] transition-colors duration-200"
-                    data-href="@Url.Action("GetStudent", "Students", new { id = "ha" })">
-                    <td class="px-4 py-3">Dr. Jane Doe</td>
-                    <td class="px-4 py-3">1234567</td>
-                    <td class="px-4 py-3 whitespace-nowrap">
-                        <span class="text-[#001E40] font-medium">Mr Sethole</span>
-                        <span class="text-gray-500">| Therapist</span>
-                    </td>
-                    <td class="px-4 py-3">9237493249</td>
-                    <td class="px-4 py-3">
-                        <div class="row-actions flex justify-center items-center bg-white p-2 rounded-2xl gap-6">
-                            <a href="" class="text-[#007BB9] hover:text-[#005f8f]" aria-label="Edit practitioner">
-                                <i class="fa-solid fa-pen-to-square text-base"></i>
-                            </a>
+
+                @if (Model == null || Model.Count == 0)
+                {
+                    <tr>
+                        <td colspan="5" class="px-4 py-6 text-center text-gray-500">No students found.</td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var student in Model)
+                    {
+                        <tr class="group cursor-pointer  hover:bg-[#CFD4E0] transition-colors duration-200"
+                            data-href="@Url.Action("GetStudent", "Students", new { id = @student.id })">
+                            <td class="px-4 py-3">@student.FirstName @student.Surname</td>
+                            <td class="px-4 py-3">@student.StudentNumber</td>
+                            <td class="px-4 py-3 whitespace-nowrap">
+                                <span class="text-[#001E40] font-medium">Mr Sethole</span>
+                                <span class="text-gray-500">| Therapist</span>
+                            </td>
+                            <td class="px-4 py-3">9237493249</td>
+                            <td class="px-4 py-3">
+                                <div class="row-actions flex justify-center items-center bg-white p-2 rounded-2xl gap-6">
+                                    <a href="" class="text-[#007BB9] hover:text-[#005f8f]" aria-label="Edit practitioner">
+                                        <i class="fa-solid fa-pen-to-square text-base"></i>
+                                    </a>
             
-                        </div>
-                    </td>
+                                </div>
+                            </td>
                     
-                </tr>
+                        </tr>
+                    }
+                }
             </tbody>
         </table>
     </section>
