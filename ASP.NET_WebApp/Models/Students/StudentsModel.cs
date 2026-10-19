@@ -79,12 +79,11 @@ public class StudentsModel : BaseModel
     public ResidenceInformationModel? ResidenceInfo { get; set; }
 
     [Required(ErrorMessage = "Please assign a practitioner .")]
-    [Column("practitioners")]
+    [Column("practitioners_id")]
     public string AssignedPractitionerID { get; set; } = string.Empty;
 
     [Reference(typeof(PractitionerModel), ReferenceAttribute.JoinType.Left)]
     public PractitionerModel? AssignedPractitionerInfo { get; set; }
-    public bool ShouldSerializeAssignedPractitionerInfo() => false;
 
 
 }

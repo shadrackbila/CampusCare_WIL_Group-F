@@ -99,14 +99,14 @@ public class StudentsController : Controller
     [Authorize]
     public async Task<IActionResult> Update(StudentsModel student)
     {
-        if (!ModelState.IsValid)
-        {
-            await LoadPractitioners();
-            return View(student);
-        }
-
         try
         {
+            if (!ModelState.IsValid)
+            {
+                await LoadPractitioners();
+                return View(student);
+            }
+
             await _supabase
        .From<StudentsModel>()
        .Where(s => s.id == student.id)
