@@ -1,3 +1,5 @@
+@model List<AppointmentsModel>
+
 @{
     ViewData["Title"] = "Appointments";
 }
@@ -27,32 +29,53 @@
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-200">
-                <tr class="group cursor-pointer hover:bg-[#CFD4E0] transition-colors duration-200"
-                    data-href="@Url.Action("GetStudent", "Students", new { id = "ha" })">
-                    <td class="px-4 py-3">Lerato Molefe</td>
-                    <td class="px-4 py-3">223874833</td>
-                    <td class="px-4 py-3 whitespace-nowrap">
-                        <span class="text-[#001E40] font-medium">Mr Sethole</span>
-                        <span class="text-gray-500">| Therapist</span>
-                    </td>
-                    <td class="px-4 py-3 whitespace-nowrap">
-                        <span class="text-[#001E40] font-medium">12 Sept 2026</span>
-                        <span class="text-gray-500">| 10:27</span>
-                    </td>
-                    <td class="px-4 py-3">Online</td>
-                    <td class="px-4 py-3">Booked</td>
-                    <td class="px-4 py-3">
-                        <div class="row-actions flex justify-center items-center bg-white p-2 rounded-2xl gap-6">
-                            <a href="" class="text-[#007BB9] hover:text-[#005f8f]" aria-label="Edit appointment">
-                                <i class="fa-solid fa-pen-to-square text-base"></i>
-                            </a>
-                            <a asp-action="ConfirmDelete" asp-controller="appointments" asp-route-id="21"
-                               class="text-red-500 hover:text-red-700" aria-label="Delete appointment">
-                                <i class="fa-solid fa-trash text-base"></i>
-                            </a>
-                        </div>
-                    </td>
-                </tr>
+                @if (Model == null || Model.Count == 0)
+                {
+                    <tr>
+                        <td colspan="5" class="px-4 py-6 text-center text-gray-500">No Appointments found.</td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var appointment in Model)
+                    {
+                        <tr class="group cursor-pointer hover:bg-[#CFD4E0] transition-colors duration-200"
+                            data-href="@Url.Action("GetStudent", "Students", new { id = @appointment?.Student?.id })">
+                            <td class="px-4 py-3">@appointment?.Student?.FirstName @appointment?.Student?.Surname</td>
+                            <td class="px-4 py-3">@appointment?.Student?.StudentNumber</td>
+                            <td class="px-4 py-3 whitespace-nowrap">
+                                @if (@appointment?.Student?.AssignedPractitionerInfo == null)
+                                {
+                                    <span class="text-gray-500 font-medium">No Practitioner Assigned.</span>
+                                }
+                                else
+                                {
+                                    <span class="text-[#001E40] font-medium">@appointment?.Student?.AssignedPractitionerInfo?.Title
+                                        @appointment?.Student?.AssignedPractitionerInfo?.FullName
+                                    </span>
+                                    <span class="text-gray-500">| @appointment?.Student?.AssignedPractitionerInfo?.Role</span>
+                                }
+                            </td>
+                            <td class="px-4 py-3 whitespace-nowrap">
+                                <span class="text-[#001E40] font-medium">@appointment?.AppointmentDate.ToString("dd MMM yyyy")</span>
+                                <span class="text-gray-500">| @appointment?.AppointmentTime.ToString("HH : MM")</span>
+                            </td>
+                            <td class="px-4 py-3">In-Person</td>
+                            <td class="px-4 py-3">@appointment?.Status</td>
+                            <td class="px-4 py-3">
+                                <div class="row-actions flex justify-center items-center bg-white p-2 rounded-2xl gap-6">
+                                    <a href="" class="text-[#007BB9] hover:text-[#005f8f]" aria-label="Edit appointment">
+                                        <i class="fa-solid fa-pen-to-square text-base"></i>
+                                    </a>
+                                    <a asp-action="ConfirmDelete" asp-controller="appointments" asp-route-id="@appointment?.ID"
+                                       class="text-red-500 hover:text-red-700" aria-label="Delete appointment">
+                                        <i class="fa-solid fa-trash text-base"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
             </tbody>
         </table>
     </section>

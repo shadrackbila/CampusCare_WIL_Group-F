@@ -14,19 +14,22 @@ public class StudentsModel : BaseModel
     [PrimaryKey("id")]
     public string id { get; set; } = string.Empty;
 
-    // 1. Personal Information
+    [Required(ErrorMessage = "The Student Number is required.")]
     [Column("student_number")]
     public string StudentNumber { get; set; } = string.Empty;
 
+    [Required(ErrorMessage = "The Surname is required.")]
     [Column("surname")]
     public string Surname { get; set; } = string.Empty;
 
+    [Required(ErrorMessage = "The Name is required.")]
     [Column("first_names")]
     public string FirstName { get; set; } = string.Empty;
 
     [Column("preferred_name")]
     public string PreferredName { get; set; } = string.Empty;
 
+    [Required(ErrorMessage = "The date of birth is required.")]
     [Column("date_of_birth")]
     public DateTime DateOfBirth { get; set; }
 
@@ -46,6 +49,7 @@ public class StudentsModel : BaseModel
         }
     }
 
+    [Required(ErrorMessage = "The gender is required.")]
     [Column("gender")]
     public string Gender { get; set; } = string.Empty;
 
@@ -74,8 +78,13 @@ public class StudentsModel : BaseModel
     [Reference(typeof(ResidenceInformationModel), ReferenceAttribute.JoinType.Left)]
     public ResidenceInformationModel? ResidenceInfo { get; set; }
 
-    // [Reference(typeof(PractitionerModel))]
-    // public PractitionerModel? AssignedPractitionerInfo { get; set; }
+    [Required(ErrorMessage = "Please assign a practitioner .")]
+    [Column("practitioners")]
+    public string AssignedPractitionerID { get; set; } = string.Empty;
+
+    [Reference(typeof(PractitionerModel), ReferenceAttribute.JoinType.Left)]
+    public PractitionerModel? AssignedPractitionerInfo { get; set; }
+    public bool ShouldSerializeAssignedPractitionerInfo() => false;
 
 
 }

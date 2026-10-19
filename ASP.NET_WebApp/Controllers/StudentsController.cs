@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using ASP.NET_WebApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Supabase;
+using Microsoft.IdentityModel.Tokens;
+using StudentManagement.Models;
 
 namespace ASP.NET_WebApp.Controllers;
 
@@ -20,7 +22,9 @@ public class StudentsController : Controller
     }
 
     [HttpGet]
+    // [Authorize(Roles = "Admin")]
     [Authorize]
+
     public async Task<IActionResult> Index()
     {
         try
@@ -40,6 +44,7 @@ public class StudentsController : Controller
         }
     }
 
+    // [Authorize(Roles = "Admin")]
     [Authorize]
     public async Task<IActionResult> GetStudent(string id)
     {
@@ -62,6 +67,75 @@ public class StudentsController : Controller
         }
     }
 
+    [HttpGet]
+    [Authorize]
+    public async Task<IActionResult> Update(string id)
+    {
+        if (id.IsNullOrEmpty())
+        {
+            return View("_NotFound");
+        }
+
+        try
+        {
+            await LoadPractitioners();
+            StudentsModel student = await _supabase.From<StudentsModel>().Where(a => a.id == id).Single();
+
+            if (student is null)
+            {
+                return View("_NotFound");
+            }
+
+            return View(student);
+        }
+        catch (Exception error)
+        {
+            return View("_NotFound");
+        }
+    }
+
+    [HttpPost]
+    // [Authorize(Roles = "Admin")]
+    [Authorize]
+    public async Task<IActionResult> Update(StudentsModel student)
+    {
+        if (!ModelState.IsValid)
+        {
+            await LoadPractitioners();
+            return View(student);
+        }
+
+        try
+        {
+            await _supabase
+       .From<StudentsModel>()
+       .Where(s => s.id == student.id)
+       .Set(s => s.StudentNumber, student.StudentNumber)
+       .Set(s => s.FirstName, student.FirstName)
+       .Set(s => s.Surname, student.Surname)
+       .Set(s => s.PreferredName, student.PreferredName)
+       .Set(s => s.DateOfBirth, student.DateOfBirth)
+       .Set(s => s.Gender, student.Gender)
+     .Set(s => s.AssignedPractitionerID, student.AssignedPractitionerID)
+
+       .Update();
+
+            return RedirectToAction("Index");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to Update student");
+            await LoadPractitioners();
+            ModelState.AddModelError(string.Empty, "Something went wrong while saving. Please try again.");
+            return View(student);
+        }
+    }
+
+    private async Task LoadPractitioners()
+    {
+        var response = await _supabase.From<PractitionerModel>().Get();
+        ViewBag.Practitioners = response.Models;
+    }
 
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

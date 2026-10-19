@@ -3,20 +3,47 @@ using Microsoft.AspNetCore.Mvc;
 using ASP.NET_WebApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
+using Supabase;
 
 namespace ASP.NET_WebApp.Controllers;
 
 public class AppointmentsController : Controller
 {
-    [HttpGet]
-    [Authorize]
-    public IActionResult Index()
+    private readonly Client _supabaseClient;
+    private readonly ILogger<AppointmentsController> _logger;
+
+
+    public AppointmentsController(ILogger<AppointmentsController> logger, Client Supabase)
     {
-        return View();
+        _supabaseClient = Supabase;
+        _logger = logger;
     }
 
     [HttpGet]
+    // [Authorize(Roles = "Admin")]
     [Authorize]
+
+    public async Task<IActionResult> Index()
+    {
+        try
+        {
+
+            var response = await _supabaseClient.From<AppointmentsModel>().Get();
+
+            List<AppointmentsModel> appointments = response.Models;
+            return View(appointments);
+        }
+        catch (Exception error)
+        {
+            _logger.LogError(error.Message);
+            return View();
+        }
+    }
+
+    [HttpGet]
+    // [Authorize(Roles = "Admin")]
+    [Authorize]
+
     public IActionResult ConfirmDelete(string id)
     {
 
@@ -26,15 +53,28 @@ public class AppointmentsController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    // [Authorize(Roles = "Admin")]
     [Authorize]
-    public IActionResult Delete(string id)
+
+    public async Task<IActionResult> Delete(string id)
     {
         if (id.IsNullOrEmpty())
         {
             return View("_NotFound");
         }
 
-        return View("Index");
+        try
+        {
+
+            await _supabaseClient.From<AppointmentsModel>().Where(a => a.ID == id).Delete();
+
+            return RedirectToAction("Index");
+        }
+        catch (Exception error)
+        {
+            return View("_NotFound");
+        }
+
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

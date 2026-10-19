@@ -15,6 +15,7 @@ public class HomeController : Controller
         _supabase = Supabase;
     }
 
+    // [Authorize(Roles = "Admin")]
     [Authorize]
     public IActionResult Index()
     {

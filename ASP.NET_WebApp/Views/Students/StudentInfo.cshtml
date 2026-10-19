@@ -31,34 +31,46 @@
                 </div>
             </div>
 
-            <div class="mt-4">
-                <div class="mt-2">
-                    <span class="text-[#0B1C30] font-bold">Assigned Practitioner :</span>
-                    <span class="text-gray-500">Sithole Zakes</span>
+            @if (@Model?.AssignedPractitionerInfo == null)
+            {
+                <div class="mt-7">
+                    <span class="text-gray-500">
+                        No Practitioner Assiged.
+                    </span>
                 </div>
+            }
+            else
+            {
+                <div class="mt-4">
+                    <div class="mt-2">
+                        <span class="text-[#0B1C30] font-bold">Assigned Practitioner :</span>
+                        <span class="text-gray-500">
+                            @Model?.AssignedPractitionerInfo?.Title @Model?.AssignedPractitionerInfo?.FullName
+                        </span>
+                    </div>
 
-                <div class="mt-2">
-                    <span class="text-[#0B1C30] font-bold">Personnel Number :</span>
-                    <span class="text-gray-500">32874329</span>
-                </div>
+                    <div class="mt-2">
+                        <span class="text-[#0B1C30] font-bold">Personnel Number :</span>
+                        <span class="text-gray-500">@Model?.AssignedPractitionerInfo?.PersonnelNumber</span>
+                    </div>
 
-                <div class="mt-2">
-                    <span class="text-[#0B1C30] font-bold">Role :</span>
-                    <span class="text-gray-500">Therapist</span>
-                </div>
+                    <div class="mt-2">
+                        <span class="text-[#0B1C30] font-bold">Role :</span>
+                        <span class="text-gray-500">@Model?.AssignedPractitionerInfo?.Role</span>
+                    </div>
 
-                <div class="mt-2">
-                    <span class="text-[#0B1C30] font-bold">Gender :</span>
-                    <span class="text-gray-500">Male</span>
-                </div>
+                    <div class="mt-2">
+                        <span class="text-[#0B1C30] font-bold">Gender :</span>
+                        <span class="text-gray-500">@Model?.AssignedPractitionerInfo?.Gender</span>
+                    </div>
 
-                <div class="mt-2">
-                    <span class="text-[#0B1C30] font-bold">Email Address :</span>
-                    <span class="text-gray-500">SitholeZakes@cut.ac.za</span>
-                </div>
+                    <div class="mt-2">
+                        <span class="text-[#0B1C30] font-bold">Email Address :</span>
+                        <span class="text-gray-500">@Model?.AssignedPractitionerInfo?.Email</span>
+                    </div>
             
-            </div>
-
+                </div>
+            }
             
 
         </div>

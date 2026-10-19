@@ -8,10 +8,11 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath = "/Account/Login"; 
-        
-        options.ExpireTimeSpan = TimeSpan.FromMinutes(30); 
-        options.SlidingExpiration = true; 
+        options.LoginPath = "/Account/Login";
+        options.AccessDeniedPath = "/Account/Login";
+
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+        options.SlidingExpiration = true;
     });
 
 var supabaseUrl = builder.Configuration["Supabase:Url"];
@@ -23,7 +24,7 @@ var options = new SupabaseOptions
     AutoConnectRealtime = false
 };
 
-builder.Services.AddSingleton(provider => 
+builder.Services.AddSingleton(provider =>
 {
     var client = new Client(supabaseUrl, supabaseKey, options);
     return client;
@@ -43,7 +44,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 
-app.UseAuthentication(); 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();

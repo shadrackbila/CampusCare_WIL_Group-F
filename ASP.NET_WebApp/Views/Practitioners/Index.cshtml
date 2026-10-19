@@ -1,3 +1,6 @@
+@using StudentManagement.Models
+@model List<PractitionerModel>
+
 @{
     ViewData["Title"] = "Practitioners Page";
 }
@@ -6,10 +9,16 @@
     <section class="w-full">
         <h1 class="text-[30px] font-bold text-[#001C37] mb-1">Practitioners</h1>
 
-        <div class="flex justify-between items-center">
+        <div class="flex justify-between flex-col md:flex-row  items-center">
             <p class="text-[#43474F] font-normal text-[15px] w-full lg:w-[35%]">
                 Search practitioners, check their availability and keep their details up to date.
             </p>
+            <div class="w-full flex justify-center  md:justify-end items-center ">
+                <a asp-action="Create"
+                   class="w-full md:w-fit py-1 px-4 text-center rounded-sm hover:bg-blue-700 transition-colors duration-300 text-white bg-blue-500">Add
+                    Practitioner
+                </a>
+            </div>
         </div>
     </section>
 
@@ -27,24 +36,41 @@
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-200">
-                <tr class="group  hover:bg-[#CFD4E0] transition-colors duration-200">
-                    <td class="px-4 py-3">Dr. Jane Doe</td>
-                    <td class="px-4 py-3">1234567</td>
-                    <td class="px-4 py-3">Counselling</td>
-                    <td class="px-4 py-3">Male</td>
-                    <td class="px-4 py-3">janeDoe@stud.cut.ac.za</td>
-                    <td class="px-4 py-3">Pending</td>
-                    <td class="px-4 py-3">
-                        <div class="row-actions flex justify-center items-center bg-white p-2 rounded-2xl gap-6">
-                            <a href="" class="text-[#007BB9] hover:text-[#005f8f]" aria-label="Edit practitioner">
-                                <i class="fa-solid fa-pen-to-square text-base"></i>
-                            </a>
-                            <a href="" class="text-red-500 hover:text-red-700" aria-label="Delete practitioner">
-                                <i class="fa-solid fa-trash text-base"></i>
-                            </a>
-                        </div>
-                    </td>
-                </tr>
+
+                @if (Model == null || Model.Count == 0)
+                {
+                    <tr>
+                        <td colspan="5" class="px-4 py-6 text-center text-gray-500">No practitioners found.</td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var practitioner in Model)
+                    {
+                        <tr class="group  hover:bg-[#CFD4E0] transition-colors duration-200">
+                            <td class="px-4 py-3">@practitioner?.Title @practitioner?.FullName</td>
+                            <td class="px-4 py-3">@practitioner?.PersonnelNumber</td>
+                            <td class="px-4 py-3">@practitioner?.Role</td>
+                            <td class="px-4 py-3">@practitioner?.Gender</td>
+                            <td class="px-4 py-3">@practitioner?.Email</td>
+                            <td class="px-4 py-3">@practitioner?.VerificationStatus</td>
+                            <td class="px-4 py-3">
+                                <div class="row-actions flex justify-center items-center bg-white p-2 rounded-2xl gap-6">
+                                    <a asp-action="Update" asp-controller="practitioners" asp-route-id="@practitioner?.ID"
+                                       class="text-[#007BB9] hover:text-[#005f8f] duration-300 transition-colors"
+                                       aria-label="Edit practitioner">
+                                        <i class="fa-solid fa-pen-to-square text-base"></i>
+                                    </a>
+                                    <a asp-action="ConfirmDelete" asp-controller="practitioners"
+                                       asp-route-id="@practitioner?.ID" class="text-red-500 hover:text-red-700"
+                                       aria-label="Delete practitioner">
+                                        <i class="fa-solid fa-trash text-base"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
             </tbody>
         </table>
     </section>
