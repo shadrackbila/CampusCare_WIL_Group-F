@@ -22,7 +22,7 @@
                         Date</label>
                         <span asp-validation-for="AppointmentDate" class="text-red-600 text-sm"></span>
                         <input asp-for="AppointmentDate" class="border border-gray-400 rounded-lg bg-[#F8F9FF] h-10 px-3"
-                               type="date">
+                               min="@DateTime.Today.ToString("yyyy-MM-dd")" type="date">
                     </div>
 
                     <div class="flex flex-col gap-1 mt-4">
@@ -30,7 +30,7 @@
                             Time</label>
                             <span asp-validation-for="AppointmentTime" class="text-red-600 text-sm"></span>
                             <input asp-for="AppointmentTime" class="border border-gray-400 rounded-lg bg-[#F8F9FF] h-10 px-3"
-                                   type="time">
+                                   min="08:00" max="15:59" type="time">
                         </div>
 
            
@@ -39,7 +39,9 @@
                             <label class="font-bold text-[17px] text-[#01305C]" asp-for="Status">Status</label>
                             <span asp-validation-for="Status" class="text-red-600 text-sm"></span>
                             <select asp-for="Status" class="border border-gray-400 rounded-lg bg-[#F8F9FF] h-10 px-3">
-                                <option value="completed">Session Completed</option>
+                                <option value="default"></option>
+                                <option value="confirmed">Confirm Booking.</option>
+                                <option value="completed">Session Completed.</option>
                                 <option value="no_show">Student didnt come.</option>
                                 <option value="cancelled">Cancel appointment.</option>
                             </select>

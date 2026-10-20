@@ -3,23 +3,43 @@ using Microsoft.AspNetCore.Mvc;
 using ASP.NET_WebApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Supabase;
+using StudentManagement.Models;
 
 namespace ASP.NET_WebApp.Controllers;
 
 public class HomeController : Controller
 {
 
-    private readonly Client _supabase;
+    private readonly Client _supabaseClient;
     public HomeController(Client Supabase)
     {
-        _supabase = Supabase;
+        _supabaseClient = Supabase;
     }
 
     // [Authorize(Roles = "Admin")]
     [Authorize]
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        return View();
+
+        try
+        {
+            HomeModel homeObj = new HomeModel();
+
+            var appointmentResponse = await _supabaseClient.From<AppointmentsModel>().Get();
+            var studentsResponse = await _supabaseClient.From<StudentsModel>().Get();
+            var practitionersResponse = await _supabaseClient.From<PractitionerModel>().Get();
+
+
+            homeObj.Appointments = appointmentResponse.Models;
+            homeObj.Students = studentsResponse.Models;
+            homeObj.Practitioners = practitionersResponse.Models;
+
+            return View(homeObj);
+        }
+        catch (Exception ex)
+        {
+            return View(new HomeModel());
+        }
     }
 
     public IActionResult Privacy()

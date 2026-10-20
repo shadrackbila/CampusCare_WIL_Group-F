@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Supabase;
 using StudentManagement.Models;
+using Supabase.Postgrest.Interfaces;
 
 namespace ASP.NET_WebApp.Controllers;
 
@@ -140,15 +141,23 @@ public class AppointmentsController : Controller
                 (existing.AppointmentDate.Date != appointment.AppointmentDate.Date) ||
                 (existing.AppointmentTime != appointment.AppointmentTime);
 
-            var query = _supabaseClient
-                .From<AppointmentsModel>()
-                .Where(a => a.ID == appointment.ID)
-                .Set(a => a.AppointmentDate, appointment.AppointmentDate)
-                .Set(a => a.AppointmentTime, appointment.AppointmentTime);
-
+            IPostgrestTable<AppointmentsModel>? query = null;
             if (rescheduled)
             {
-                query = query.Set(a => a.Status, "rescheduled");
+                query = _supabaseClient
+                    .From<AppointmentsModel>()
+                    .Where(a => a.ID == appointment.ID)
+                    .Set(a => a.AppointmentDate, appointment.AppointmentDate)
+                    .Set(a => a.AppointmentTime, appointment.AppointmentTime)
+                    .Set(a => a.Status, "rescheduled");
+            }
+
+            else if (appointment.Status != "default")
+            {
+                query = _supabaseClient
+                .From<AppointmentsModel>()
+                .Where(a => a.ID == appointment.ID)
+                .Set(a => a.Status, appointment.Status);
             }
 
 

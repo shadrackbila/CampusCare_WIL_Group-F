@@ -7,7 +7,7 @@ using Supabase.Postgrest.Attributes;
 using Supabase.Postgrest.Models;
 
 [Table("appointments")]
-public class AppointmentsModel : BaseModel
+public class AppointmentsModel : BaseModel, IValidatableObject
 {
 
     [Key]
@@ -38,6 +38,18 @@ public class AppointmentsModel : BaseModel
 
     [Column("booking_reference")]
     public string BookingReference { get; set; } = string.Empty;
+
+    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+    {
+        var appointmentDateTime = AppointmentDate.Date + AppointmentTime;
+
+        if (appointmentDateTime <= DateTime.Now)
+        {
+            yield return new ValidationResult(
+                "The appointment must be in the future.",
+                new[] { nameof(AppointmentDate), nameof(AppointmentTime) });
+        }
+    }
 
 
 }
