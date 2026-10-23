@@ -18,4 +18,4 @@ Final year group project for group F ,a monorepo containing a Flutter mobile app
 - Mbinga B      
 
 ## Current project stage
-- Planning and requirements
+- System Development and Implementation 
