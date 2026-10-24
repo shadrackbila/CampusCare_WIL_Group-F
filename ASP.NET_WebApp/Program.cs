@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Supabase;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,6 +32,27 @@ builder.Services.AddSingleton(provider =>
     return client;
 });
 
+var serviceKey = builder.Configuration["Supabase:ServiceRoleKey"];
+var adminOptions = new SupabaseOptions
+{
+    AutoRefreshToken = false,
+    AutoConnectRealtime = false
+};
+
+builder.Services.AddKeyedSingleton<Client>("admin", (provider, key) =>
+{
+    var client = new Client(supabaseUrl, serviceKey, adminOptions);
+    client.InitializeAsync().GetAwaiter().GetResult();
+    return client;
+});
+
+// builder.Services.AddControllersWithViews(options =>
+// {
+//     var policy = new AuthorizationPolicyBuilder()
+//         .RequireAuthenticatedUser()
+//         .Build();
+//     options.Filters.Add(new AuthorizeFilter(policy));
+// });
 
 var app = builder.Build();
 

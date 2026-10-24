@@ -18,6 +18,9 @@ namespace StudentManagement.Models
         [Column("full_name")]
         public string FullName { get; set; } = string.Empty;
 
+        [Column("user_id")]
+        public string UserID { get; set; } = string.Empty;
+
         [Required(ErrorMessage = "The Title is required.")]
         [Column("title")]
         public string Title { get; set; } = string.Empty;

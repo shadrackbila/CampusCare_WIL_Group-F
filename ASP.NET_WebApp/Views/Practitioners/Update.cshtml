@@ -27,16 +27,17 @@
                 <div class="flex flex-col gap-1 mt-4">
                     <label class="font-bold text-[17px] text-[#01305C]" asp-for="Role">Role</label>
                     <span asp-validation-for="Role" class="text-red-600 text-sm"></span>
-                    <select asp-for="Role" class="border border-gray-400 rounded-lg bg-[#F8F9FF] h-10 px-3">
+                    <select asp-for="Role" disabled
+                            class="border opacity-50 cursor-not-allowed border-gray-400 rounded-lg bg-[#F8F9FF] h-10 px-3">
                         <option value="counselor">Counselor</option>
                         <option value="psychologist">Psychologist</option>
                         <option value="social_worker">Social Worker</option>
                         <option value="wellness_practitioner">Wellness Practitioner</option>
                         <option value="peer_educator">Peer Educator</option>
                         <option value="other">Other</option>
-
-
                     </select>
+                    <input asp-for="Role" type="hidden" />
+
                 </div>
 
                 <div class="flex flex-col gap-1 mt-4">

@@ -30,19 +30,22 @@
             <div class="w-full flex justify-end items-center px-4 py-2">
                 <div class="flex justify-center items-center gap-4">
 
-                    <div>
-                        <i class="fa-regular fa-bell text-lg"></i>
-                    </div>
+                
                     <div class="flex justify-center items-center gap-2">
                    
                         <i class="fa-solid fa-circle-user  text-3xl "></i>
                         
-                        <div>
-                            <div class="text-[13px] font-semibold text-[#001C37]">Adam Smith</div>
-                            <div class="text-[11px] font-semibold text-[#43474F]">Administrator</div>
-                        </div>
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            var fullName = User.Identity?.Name ?? "";
+                            var role = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value ?? "";
+
+                            <div>
+                                <div class="text-[13px] font-semibold text-[#001C37]">@fullName</div>
+                                <div class="text-[11px] font-semibold text-[#43474F]">@role</div>
+                            </div>
+                        }
                       
-                        <i class="fa-solid fa-chevron-down text-[12px] text-[#43474F]"></i>
                       
                     </div>
                 </div>
@@ -70,28 +73,36 @@
                         </li>
                     </a>
 
-                    <a class="hover:bg-[#007BB9] w-full my-1 rounded-lg" asp-controller="Practitioners"
-                       asp-action="Index">
-                        <li class="w-full flex justify-start items-center gap-2 my-2 pl-3">
-                            <i class="fa-solid fa-user-doctor text-2xl w-8 text-center"></i>
-                            <p class="text-base">Practitioners</p>
-                        </li>
-                    </a>
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        var role = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value ?? "";
 
-                    <a class="hover:bg-[#007BB9] w-full my-1 rounded-lg" asp-controller="Appointments"
-                       asp-action="Index">
-                        <li class="w-full flex justify-start items-center gap-2 my-2 pl-3">
-                            <i class="fa-solid fa-calendar-check text-2xl w-8 text-center"></i>
-                            <p class="text-base">Appointment</p>
-                        </li>
-                    </a>
+                        @if (role == "admin")
+                        {
+                            <a class="hover:bg-[#007BB9] w-full my-1 rounded-lg" asp-controller="Practitioners"
+                               asp-action="Index">
+                                <li class="w-full flex justify-start items-center gap-2 my-2 pl-3">
+                                    <i class="fa-solid fa-user-doctor text-2xl w-8 text-center"></i>
+                                    <p class="text-base">Practitioners</p>
+                                </li>
+                            </a>
 
-                    <a class="hover:bg-[#007BB9] w-full my-1 rounded-lg" asp-controller="Students" asp-action="Index">
-                        <li class="w-full flex justify-start items-center gap-2 my-2 pl-3">
-                            <i class="fa-solid fa-user-graduate text-2xl w-8 text-center"></i>
-                            <p class="text-base">Students</p>
-                        </li>
-                    </a>
+                            <a class="hover:bg-[#007BB9] w-full my-1 rounded-lg" asp-controller="Appointments"
+                               asp-action="Index">
+                                <li class="w-full flex justify-start items-center gap-2 my-2 pl-3">
+                                    <i class="fa-solid fa-calendar-check text-2xl w-8 text-center"></i>
+                                    <p class="text-base">Appointment</p>
+                                </li>
+                            </a>
+
+                            <a class="hover:bg-[#007BB9] w-full my-1 rounded-lg" asp-controller="Students" asp-action="Index">
+                                <li class="w-full flex justify-start items-center gap-2 my-2 pl-3">
+                                    <i class="fa-solid fa-user-graduate text-2xl w-8 text-center"></i>
+                                    <p class="text-base">Students</p>
+                                </li>
+                            </a>
+                        }
+                    }
 
 
                 </ul>

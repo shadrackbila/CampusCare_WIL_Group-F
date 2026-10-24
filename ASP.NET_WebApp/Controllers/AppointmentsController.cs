@@ -43,7 +43,7 @@ public class AppointmentsController : Controller
     }
 
     [HttpGet]
-    // [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "admin")]
     [Authorize]
 
     public IActionResult ConfirmDelete(string id)
@@ -55,9 +55,8 @@ public class AppointmentsController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    // [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "admin")]
     [Authorize]
-
     public async Task<IActionResult> Delete(string id)
     {
         if (id.IsNullOrEmpty())
@@ -81,6 +80,7 @@ public class AppointmentsController : Controller
 
 
     [HttpGet]
+    [Authorize(Roles = "admin")]
     [Authorize]
     public async Task<IActionResult> Update(string id)
     {
@@ -111,6 +111,7 @@ public class AppointmentsController : Controller
 
     [HttpPost]
     [Authorize]
+    [Authorize(Roles = "admin")]
     public async Task<IActionResult> Update(AppointmentsModel appointment)
     {
         try

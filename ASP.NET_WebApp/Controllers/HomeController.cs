@@ -11,9 +11,11 @@ public class HomeController : Controller
 {
 
     private readonly Client _supabaseClient;
-    public HomeController(Client Supabase)
+    private readonly Client _adminDb;
+    public HomeController(Client Supabase, [FromKeyedServices("admin")] Client adminDb)
     {
         _supabaseClient = Supabase;
+        _adminDb = adminDb;
     }
 
     // [Authorize(Roles = "Admin")]
@@ -25,9 +27,9 @@ public class HomeController : Controller
         {
             HomeModel homeObj = new HomeModel();
 
-            var appointmentResponse = await _supabaseClient.From<AppointmentsModel>().Get();
-            var studentsResponse = await _supabaseClient.From<StudentsModel>().Get();
-            var practitionersResponse = await _supabaseClient.From<PractitionerModel>().Get();
+            var appointmentResponse = await _adminDb.From<AppointmentsModel>().Get();
+            var studentsResponse = await _adminDb.From<StudentsModel>().Get();
+            var practitionersResponse = await _adminDb.From<PractitionerModel>().Get();
 
 
             homeObj.Appointments = appointmentResponse.Models;
@@ -40,6 +42,18 @@ public class HomeController : Controller
         {
             return View(new HomeModel());
         }
+    }
+
+    [Authorize]
+    public async Task<IActionResult> Practitioners()
+    {
+        return View();
+    }
+
+    [Authorize]
+    public async Task<IActionResult> PeerEducators()
+    {
+        return View();
     }
 
     public IActionResult Privacy()

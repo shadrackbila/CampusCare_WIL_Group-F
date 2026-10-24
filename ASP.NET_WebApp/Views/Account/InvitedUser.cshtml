@@ -1,0 +1,46 @@
+@model SetPasswordModel
+
+<section class="w-full min-h-screen flex items-center justify-center bg-[#F8F9FF]">
+    <div class="w-full bg-white border border-gray-400 flex justify-center items-start rounded-2xl overflow-hidden">
+        <div class="w-full lg:w-[50%] hidden lg:flex">
+            <img class="w-full" src="~/assets/imgs/lapeng.jpeg" alt="Lapeng services building">
+        </div>
+        <div class="w-full lg:w-[50%]  p-4 flex flex-col  ">
+            <div class="mt-10">
+                <p class="font-bold text-[30px] text-[#01305C]">Set your password</p>
+                <p class="text-[#43474F] font-normal text-[15px] w-full lg:w-[50%]">Creat your password to continue.</p>
+            </div>
+
+            <div class="w-full mt-14 md:mt-36 ">
+                <form asp-controller="Account" asp-action="InvitedUser" method="post">
+
+                    <div asp-validation-summary="ModelOnly" class="text-red-600 text-sm mb-4"></div>
+                    <input type="hidden" asp-for="TokenHash" />
+
+                    <div class="flex flex-col gap-1">
+                        <label class="font-bold text-[17px] text-[#01305C]" asp-for="Password">Password</label>
+                        <span asp-validation-for="Password" class="text-red-600 text-sm"></span>
+                        <input asp-for="Password" class="border border-gray-400 rounded-lg bg-[#F8F9FF] h-10 px-3"
+                               type="password">
+                    </div>
+
+                    <div class="flex flex-col gap-1 mt-4">
+                        <label asp-for="ConfirmPassword"
+                               class="font-bold text-[17px] text-[#01305C]">ConfirmPassword</label>
+                        <span asp-validation-for="ConfirmPassword" class="text-red-600 text-sm"></span>
+                        <input asp-for="ConfirmPassword"
+                               class="border border-gray-400 rounded-lg bg-[#F8F9FF] h-10 px-3" type="password">
+                    </div>
+
+
+                    <button class="w-full mt-7 bg-[#01305C] h-10 px-3 rounded-lg text-white font-bold text-[17px]"
+                            type="submit">Set password</button>
+                </form>
+            </div>
+
+       
+
+  
+        </div>
+    </section>
+

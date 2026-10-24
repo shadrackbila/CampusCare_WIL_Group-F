@@ -37,6 +37,8 @@
             </thead>
             <tbody class="divide-y divide-gray-200">
 
+                <div asp-validation-summary="ModelOnly" class="text-red-600 text-sm mb-4"></div>
+
                 @if (Model == null || Model.Count == 0)
                 {
                     <tr>

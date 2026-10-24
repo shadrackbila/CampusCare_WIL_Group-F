@@ -10,10 +10,17 @@
             <img class="w-full" src="~/assets/imgs/lapeng.jpeg" alt="Lapeng services building">
         </div>
         <div class="w-full lg:w-[50%]  p-4 flex flex-col  ">
+
+
             <div class="mt-10">
                 <p class="font-bold text-[30px] text-[#01305C]">Welcome Back</p>
                 <p class="text-[#43474F] font-normal text-[15px] w-full lg:w-[50%]">LogIn to access the Dashboard.</p>
             </div>
+
+            @if (TempData["Success"] != null)
+            {
+                <div class="alert alert-success mt-2">@TempData["Success"]</div>
+            }
 
             <div class="w-full mt-14 md:mt-36 ">
                 <form asp-controller="Account" asp-action="Login" method="post">
