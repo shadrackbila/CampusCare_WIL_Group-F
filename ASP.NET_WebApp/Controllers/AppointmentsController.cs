@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using Supabase;
 using StudentManagement.Models;
 using Supabase.Postgrest.Interfaces;
+using System.Security.Claims;
 
 namespace ASP.NET_WebApp.Controllers;
 
@@ -13,16 +14,18 @@ public class AppointmentsController : Controller
 {
     private readonly Client _supabaseClient;
     private readonly ILogger<AppointmentsController> _logger;
+    private readonly Client _adminDb;
 
 
-    public AppointmentsController(ILogger<AppointmentsController> logger, Client Supabase)
+    public AppointmentsController(ILogger<AppointmentsController> logger, Client Supabase, [FromKeyedServices("admin")] Client adminDb)
     {
         _supabaseClient = Supabase;
         _logger = logger;
+        _adminDb = adminDb;
     }
 
     [HttpGet]
-    // [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "admin")]
     [Authorize]
 
     public async Task<IActionResult> Index()
@@ -30,10 +33,40 @@ public class AppointmentsController : Controller
         try
         {
 
-            var response = await _supabaseClient.From<AppointmentsModel>().Get();
+            var response = await _adminDb.From<AppointmentsModel>().Get();
 
             List<AppointmentsModel> appointments = response.Models;
             return View(appointments);
+        }
+        catch (Exception error)
+        {
+            _logger.LogError(error.Message);
+            return View();
+        }
+    }
+
+    [HttpGet]
+    [Authorize(Roles = "practitioner")]
+    [Authorize]
+
+    public async Task<IActionResult> AppointmentsForPract()
+    {
+        try
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var response = await _adminDb.From<AppointmentsModel>().Get();
+
+
+            ViewBag.Role = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value ?? "";
+
+            List<AppointmentsModel> appointments = response.Models.Where(a => a.Student?.AssignedPractitionerInfo?.UserID == userId).ToList();
+            return View("Index", appointments);
         }
         catch (Exception error)
         {
@@ -175,7 +208,10 @@ public class AppointmentsController : Controller
                     .Update();
             }
 
-            await query.Update();
+            if (query != null)
+            {
+                await query.Update();
+            }
 
             return RedirectToAction("Index");
         }

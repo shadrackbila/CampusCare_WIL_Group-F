@@ -4,6 +4,8 @@ using ASP.NET_WebApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Supabase;
 using StudentManagement.Models;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ASP.NET_WebApp.Controllers;
 
@@ -31,10 +33,12 @@ public class HomeController : Controller
             var studentsResponse = await _adminDb.From<StudentsModel>().Get();
             var practitionersResponse = await _adminDb.From<PractitionerModel>().Get();
 
-
             homeObj.Appointments = appointmentResponse.Models;
             homeObj.Students = studentsResponse.Models;
             homeObj.Practitioners = practitionersResponse.Models;
+
+            ViewBag.PeerEducators = homeObj.Practitioners.Count(p => p.Role == "peer_educator");
+
 
             return View(homeObj);
         }
@@ -47,7 +51,33 @@ public class HomeController : Controller
     [Authorize]
     public async Task<IActionResult> Practitioners()
     {
-        return View();
+        try
+        {
+            HomeModel homeObj = new HomeModel();
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var appointmentResponse = await _adminDb.From<AppointmentsModel>().Get();
+            var studentsResponse = await _adminDb.From<StudentsModel>().Get();
+            var practitioner = await _adminDb.From<PractitionerModel>().Where(p => p.UserID == userId).Single();
+
+
+            homeObj.Appointments = appointmentResponse.Models.Where(a => a.Student?.AssignedPractitionerInfo?.UserID == userId).ToList();
+            homeObj.Students = studentsResponse.Models.Where(s => s.AssignedPractitionerInfo?.UserID == userId).ToList();
+
+            ViewBag.PractitionerDetails = $"{practitioner?.Title} {practitioner?.FullName}";
+
+            return View(homeObj);
+        }
+        catch (Exception ex)
+        {
+            return View(new HomeModel());
+        }
     }
 
     [Authorize]

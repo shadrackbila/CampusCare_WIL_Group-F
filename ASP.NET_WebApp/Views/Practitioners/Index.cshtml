@@ -62,12 +62,12 @@
                                 var badgeClass = status.ToLower() switch
                                 {
                                     "pending" => "text-yellow-500",
-                                    "confirmed" => "text-green-500",
+                                    "verified" => "text-green-500",
                                     "expired" => "text-red-500",
                                     _ => "text-brown-500"
                                 };
                             }
-                            <td class="px-4 py-3 font-semibold @badgeClass">@status</td>
+                            <td class="px-4 py-3 font-semibold uppercase @badgeClass">@status</td>
                             <td class="px-4 py-3">
                                 <div class="row-actions flex justify-center items-center bg-white p-2 rounded-2xl gap-6">
                                     <a asp-action="Update" asp-controller="practitioners" asp-route-id="@practitioner?.ID"

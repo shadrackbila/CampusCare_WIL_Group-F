@@ -14,17 +14,21 @@ public class StudentsController : Controller
     private readonly ILogger<StudentsController> _logger;
 
     private readonly Client _supabase;
+    private readonly Client _adminDb;
 
-    public StudentsController(ILogger<StudentsController> logger, Client Supabase)
+    public StudentsController(ILogger<StudentsController> logger, Client Supabase, [FromKeyedServices("admin")] Client adminDb)
     {
         _logger = logger;
         _supabase = Supabase;
+        _adminDb = adminDb;
+
     }
 
-    [HttpGet]
-    // [Authorize(Roles = "Admin")]
-    [Authorize]
 
+
+    [HttpGet]
+    // [Authorize(Roles = "admin")]
+    [Authorize]
     public async Task<IActionResult> Index()
     {
         try
@@ -44,31 +48,34 @@ public class StudentsController : Controller
         }
     }
 
-    // [Authorize(Roles = "Admin")]
+    // [Authorize(Roles = "admin")]
     [Authorize]
     public async Task<IActionResult> GetStudent(string id)
     {
         try
         {
-            var student = await _supabase.From<StudentsModel>()
+            var student = await _adminDb.From<StudentsModel>()
                 .Where(s => s.id == id)
                 .Single();
 
             if (student == null)
-                return NotFound();
+                return View("_NotFound");
 
 
             return View("StudentInfo", student);
         }
         catch (Exception ex)
         {
+            ViewBag.Error = $"Failed to load student";
             _logger.LogError(ex, "Failed to load student {Id}", id);
-            return NotFound();
+            return View("_NotFound");
+
         }
     }
 
     [HttpGet]
     [Authorize]
+    [Authorize(Roles = "admin")]
     public async Task<IActionResult> Update(string id)
     {
         if (id.IsNullOrEmpty())
@@ -95,7 +102,7 @@ public class StudentsController : Controller
     }
 
     [HttpPost]
-    // [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "admin")]
     [Authorize]
     public async Task<IActionResult> Update(StudentsModel student)
     {

@@ -24,9 +24,12 @@
                     <th class="px-4 py-3 font-semibold">Student number</th>
                     <th class="px-4 py-3 font-semibold">Assigned Practitioner</th>
                     <th class="px-4 py-3 font-semibold">Scheduled Date</th>
-                    <th class="px-4 py-3 font-semibold">Type</th>
                     <th class="px-4 py-3 font-semibold">Status</th>
-                    <th class="px-4 py-3 font-semibold text-center">Manage</th>
+
+                    @if (@ViewBag.Role != "practitioner")
+                    {
+                        <th class="px-4 py-3 font-semibold text-center">Manage</th>
+                    }
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-200">
@@ -61,7 +64,6 @@
                                 <span class="text-[#001E40] font-medium">@appointment?.AppointmentDate.ToString("dd MMM yyyy")</span>
                                 <span class="text-gray-500">| @appointment?.AppointmentTime.ToString(@"hh\:mm")</span>
                             </td>
-                            <td class="px-4 py-3">In-Person</td>
 
                             @{
                                 var status = appointment?.Status ?? "";
@@ -78,18 +80,22 @@
                                 };
                             }
                             <td class="px-4 py-3 font-semibold @badgeClass"> @status</td>
-                            <td class="px-4 py-3">
-                                <div class="row-actions flex justify-center items-center bg-white p-2 rounded-2xl gap-6">
-                                    <a asp-action="Update" asp-controller="appointments" asp-route-id="@appointment?.ID"
-                                       class="text-[#007BB9] hover:text-[#005f8f]" aria-label="Edit appointment">
-                                        <i class="fa-solid fa-pen-to-square text-base"></i>
-                                    </a>
-                                    <a asp-action="ConfirmDelete" asp-controller="appointments" asp-route-id="@appointment?.ID"
-                                       class="text-red-500 hover:text-red-700" aria-label="Delete appointment">
-                                        <i class="fa-solid fa-trash text-base"></i>
-                                    </a>
-                                </div>
-                            </td>
+
+                            @if (@ViewBag.Role != "practitioner")
+                            {
+                                <td class="px-4 py-3">
+                                    <div class="row-actions flex justify-center items-center bg-white p-2 rounded-2xl gap-6">
+                                        <a asp-action="Update" asp-controller="appointments" asp-route-id="@appointment?.ID"
+                                           class="text-[#007BB9] hover:text-[#005f8f]" aria-label="Edit appointment">
+                                            <i class="fa-solid fa-pen-to-square text-base"></i>
+                                        </a>
+                                        <a asp-action="ConfirmDelete" asp-controller="appointments" asp-route-id="@appointment?.ID"
+                                           class="text-red-500 hover:text-red-700" aria-label="Delete appointment">
+                                            <i class="fa-solid fa-trash text-base"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            }
                         </tr>
                     }
                 }

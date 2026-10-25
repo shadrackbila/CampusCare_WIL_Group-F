@@ -17,14 +17,16 @@ public class AccountController : Controller
     private readonly IConfiguration _config;
 
     private readonly ILogger<SetPasswordModel> _logger;
+    private readonly Client _adminDb;
 
 
-    public AccountController(ILogger<SetPasswordModel> logger, Client SupabaseClient, IConfiguration config)
+
+    public AccountController(ILogger<SetPasswordModel> logger, Client SupabaseClient, IConfiguration config, [FromKeyedServices("admin")] Client adminDb)
     {
         _supabaseClient = SupabaseClient;
         _logger = logger;
         _config = config;
-
+        _adminDb = adminDb;
     }
 
     [HttpGet]
@@ -55,24 +57,31 @@ public class AccountController : Controller
             return View(model);
         }
 
+        var userId = string.Empty;
 
         try
         {
             var session = await _supabaseClient.Auth.VerifyTokenHash(
                 model.TokenHash, Supabase.Gotrue.Constants.EmailOtpType.Invite);
 
-            var userId = session?.User?.Id;
-            if (userId == null)
+            userId = session?.User?.Id;
+
+            if (string.IsNullOrEmpty(userId))
             {
+                // await _adminDb.From<PractitionerModel>().Where(p => p.UserID == userId).Set(p => p.VerificationStatus, "expired").Update();
+
                 ModelState.AddModelError("", "This invite link is invalid or has expired.");
                 return View(model);
             }
+
 
             var admin = _supabaseClient.AdminAuth(_config["Supabase:ServiceRoleKey"] ?? "");
             await admin.UpdateUserById(userId, new Supabase.Gotrue.AdminUserAttributes
             {
                 Password = model.Password
             });
+
+            await _adminDb.From<PractitionerModel>().Where(p => p.UserID == userId).Set(p => p.VerificationStatus, "verified").Update();
 
 
             TempData["Success"] = "Password set. You can now sign in.";
@@ -99,7 +108,17 @@ public class AccountController : Controller
 
         try
         {
-            var session = await _supabaseClient.Auth.SignIn(model.UserName, model.Password);
+            Supabase.Gotrue.Session? session = null;
+
+            try
+            {
+                session = await _supabaseClient.Auth.SignIn(model.UserName, model.Password);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "Invalid username or password.");
+
+            }
 
             if (session?.User != null)
             {
@@ -149,7 +168,6 @@ public class AccountController : Controller
 
             }
 
-            ModelState.AddModelError("", "Invalid username or password.");
         }
         catch (Exception ex)
         {
@@ -161,7 +179,13 @@ public class AccountController : Controller
 
     }
 
-
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Logout()
+    {
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        return RedirectToAction("Login");
+    }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()

@@ -18,11 +18,11 @@
             class="w-full navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow  ">
 
             <div class="ml-10 w-full">
-                <button id="openBtn" onclick="sideBar(true)">
+                <button id="openBtn" class="hidden" onclick="sideBar(true)">
                     <i class="fa-solid fa-bars"></i>
                 </button>
 
-                <button id="closeBtn" class="hidden" onclick="sideBar(false)">
+                <button id="closeBtn" onclick="sideBar(false)">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
@@ -58,24 +58,56 @@
         @* Side bar *@
         @* ------------------------------ *@
         <div id="sidebar"
-             class="bg-[#001E40] w-64 sticky top-[var(--header-h,64px)] self-start h-[calc(100vh-64px)] shrink-0 hidden py-10 px-3">
+             class="bg-[#001E40] w-64 sticky top-[var(--header-h,64px)] self-start h-[calc(100vh-64px)] shrink-0  py-10 px-3">
             <div class="w-full bg-white">
                 <img class="w-[50%]" src="~/assets/imgs/cut_logo.png" alt="Logo">
             </div>
 
-            <div class="w-full">
+            <div class="w-full ">
                 <ul class="w-full flex flex-col items-start justify-center  mt-10 text-white">
 
-                    <a class="hover:bg-[#007BB9] w-full my-1 rounded-lg" href="/">
-                        <li class="w-full flex justify-start items-center gap-2 my-2 pl-3">
-                            <i class="fa-solid fa-table-cells-large text-2xl "></i>
-                            <p class="text-base">Dashboard</p>
-                        </li>
-                    </a>
 
                     @if (User.Identity?.IsAuthenticated == true)
                     {
                         var role = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value ?? "";
+
+                        var DashAction = role;
+
+                        switch (DashAction)
+                        {
+                            case "admin":
+                                DashAction = "Index";
+                                break;
+
+                            case "practitioner":
+                                DashAction = "Practitioners";
+                                break;
+
+                            case "peer_educator":
+                                DashAction = "PeerEducators";
+                                break;
+
+                            default:
+                                break;
+                        }
+
+                        <a asp-controller="Home" asp-action="@DashAction" class="hover:bg-[#007BB9] w-full my-1 rounded-lg">
+                            <li class="w-full flex justify-start items-center gap-2 my-2 pl-3">
+                                <i class="fa-solid fa-table-cells-large text-2xl "></i>
+                                <p class="text-base">Dashboard</p>
+                            </li>
+                        </a>
+
+                        @if (role == "practitioner")
+                        {
+                            <a class="hover:bg-[#007BB9] w-full my-1 rounded-lg" asp-controller="Appointments"
+                               asp-action="AppointmentsForPract">
+                                <li class="w-full flex justify-start items-center gap-2 my-2 pl-3">
+                                    <i class="fa-solid fa-calendar-check text-2xl w-8 text-center"></i>
+                                    <p class="text-base">Appointment</p>
+                                </li>
+                            </a>
+                        }
 
                         @if (role == "admin")
                         {
@@ -107,7 +139,17 @@
 
                 </ul>
 
-                <div></div>
+                <div>
+                    <form asp-controller="Account" asp-action="Logout" method="post" class="w-full my-1">
+                        <button type="submit"
+                                class="hover:bg-[#007BB9] text-white w-full rounded-lg text-left  border-0 cursor-pointer">
+                            <div class="w-full flex justify-start items-center gap-2 my-2 pl-3">
+                                <i class="fa-solid fa-right-from-bracket text-2xl w-8 text-center"></i>
+                                <p class="text-base">Sign Out</p>
+                            </div>
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
 
