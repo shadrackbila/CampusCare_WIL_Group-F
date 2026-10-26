@@ -1,0 +1,79 @@
+@using System.Globalization
+@model IEnumerable<string>
+
+@{
+    // Statuses shown in the legend, in display order
+    var statusKeys = new[] { "completed", "pending", "confirmed", "rescheduled", "cancelled", "no_show" };
+
+    string ColorClass(string status) => status.ToLower() switch
+    {
+        "pending" => "text-yellow-500",
+        "confirmed" => "text-green-500",
+        "rescheduled" => "text-blue-500",
+        "completed" => "text-gray-500",
+        "cancelled" => "text-red-500",
+        "no_show" => "text-orange-500",
+        _ => "text-brown-500"
+    };
+
+    string DisplayName(string status) =>
+        CultureInfo.InvariantCulture.TextInfo.ToTitleCase(status.Replace("_", " "));
+
+    string F(double v) => v.ToString("0.##", CultureInfo.InvariantCulture);
+
+    var statuses = (Model ?? Enumerable.Empty<string>())
+        .Select(s => (s ?? "").ToLower())
+        .ToList();
+    var total = statuses.Count;
+
+    double offset = 0;
+}
+
+<div class="flex items-center gap-10">
+
+    <div class="relative w-[170px] h-[170px] shrink-0">
+        <svg viewBox="0 0 100 100" class="w-full h-full -rotate-90">
+            <!-- empty track, also shown when there is no data -->
+            <circle cx="50" cy="50" r="40" fill="none" stroke="#E5E7EB" stroke-width="12" />
+
+            @if (total > 0)
+            {
+                foreach (var key in statusKeys)
+                {
+                    var count = statuses.Count(s => s == key);
+                    if (count == 0) { continue; }
+
+                    var pct = count * 100.0 / total;
+
+                    <circle cx="50" cy="50" r="40" fill="none" class="@ColorClass(key)" stroke="currentColor" stroke-width="12"
+                            pathLength="100" stroke-dasharray="@F(pct) @F(100 - pct)" stroke-dashoffset="@F(-offset)" />
+
+                    offset += pct;
+                }
+            }
+        </svg>
+
+        <div class="absolute inset-0 flex flex-col items-center justify-center">
+            <span class="text-4xl font-bold text-[#001C37] leading-none">@total</span>
+            <span class="text-xs font-semibold tracking-wide text-gray-600 mt-1">TOTAL APPTS</span>
+        </div>
+    </div>
+
+    <ul class="flex-1 space-y-4 min-w-[220px]">
+        @foreach (var key in statusKeys)
+        {
+            var count = statuses.Count(s => s == key);
+            var pct = total == 0 ? 0 : (int)Math.Round(count * 100.0 / total);
+
+            <li class="flex items-center justify-between">
+                <span class="flex items-center gap-3 text-[#001C37]">
+                    <span class="w-3 h-3 rounded-full bg-current @ColorClass(key)"></span>
+                    @DisplayName(key)
+                </span>
+                <span class="text-[#001C37]">
+                    <strong>@pct%</strong> <span class="text-gray-500">(@count)</span>
+                </span>
+            </li>
+        }
+    </ul>
+</div>
