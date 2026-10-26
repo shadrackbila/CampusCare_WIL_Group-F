@@ -2,3 +2,24 @@ ASP.NET_WebApp/appsettings.json
 ASP.NET_WebApp/appsettings.Development.json
 bin/
 obj/
+
+# ASP.NET build artifacts
+[Bb]in/
+[Oo]bj/
+.vs/
+*.user
+*.suo
+
+# Local config / secrets
+appsettings.json
+appsettings.Development.json
+.env
+
+# Node / Tailwind
+node_modules/
+npm-debug.log*
+
+# Local / export files (do not commit)
+.mcp.json
+Campus_Care_Full.txt
+asp_net_app.txt
