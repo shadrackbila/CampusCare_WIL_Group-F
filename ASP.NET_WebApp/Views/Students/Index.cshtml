@@ -1,0 +1,76 @@
+@model List<StudentsModel>
+
+@{
+    ViewData["Title"] = "Students Page";
+}
+
+<div class="w-full">
+    <section class="w-full">
+        <h1 class="text-[30px] font-bold text-[#001C37] mb-1">Students</h1>
+
+        <div class="flex justify-between items-center">
+            <p class="text-[#43474F] font-normal text-[15px] w-full lg:w-[35%]">
+                Search students, review their appointment history and keep their details up to date.
+            </p>
+        </div>
+    </section>
+
+    <section class="bg-white border border-gray-400 w-full mt-10 flex justify-center items-center p-4 rounded-2xl">
+        <table class="w-full min-w-[640px] text-left text-sm">
+            <thead class="bg-gray-50 text-[#43474F] border-y border-gray-400">
+                <tr class="uppercase">
+                    <th class="px-4 py-3 font-semibold">Student</th>
+                    <th class="px-4 py-3 font-semibold">Student number</th>
+                    <th class="px-4 py-3 font-semibold">Assigned practitioner</th>
+                    <th class="px-4 py-3 font-semibold">File/Client number</th>
+                    <th class="px-4 py-3 font-semibold">Manage</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+
+                @if (Model == null || Model.Count == 0)
+                {
+                    <tr>
+                        <td colspan="5" class="px-4 py-6 text-center text-gray-500">No students found.</td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var student in Model)
+                    {
+                        <tr class="group cursor-pointer  hover:bg-[#CFD4E0] transition-colors duration-200"
+                            data-href="@Url.Action("GetStudent", "Students", new { id = @student.id })">
+                            <td class="px-4 py-3">@student.FirstName @student.Surname</td>
+                            <td class="px-4 py-3">@student.StudentNumber</td>
+                            <td class="px-4 py-3 whitespace-nowrap">
+                                @if (@student?.AssignedPractitionerInfo == null)
+                                {
+                                    <span class="text-red-500 font-semibold">No Practitioner Assigned.</span>
+                                }
+                                else
+                                {
+                                    <span class="text-[#001E40] font-medium">
+                                        @student?.AssignedPractitionerInfo?.Title
+                                        @student?.AssignedPractitionerInfo?.FullName
+                                    </span>
+                                    <span class="text-gray-500">| @student?.AssignedPractitionerInfo?.Role</span>
+                                }
+                            </td>
+                            <td class="px-4 py-3">9237493249</td>
+                            <td class="px-4 py-3">
+                                <div class="row-actions flex justify-center items-center bg-white p-2 rounded-2xl gap-6">
+                                    <a asp-action="Update" asp-route-id="@student?.id"
+                                       class="text-[#007BB9] hover:text-[#005f8f]" aria-label="Edit practitioner">
+                                        <i class="fa-solid fa-pen-to-square text-base"></i>
+                                    </a>
+            
+                                </div>
+                            </td>
+                    
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </section>
+</div>
