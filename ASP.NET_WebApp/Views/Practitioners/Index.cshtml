@@ -1,0 +1,91 @@
+@using StudentManagement.Models
+@model List<PractitionerModel>
+
+@{
+    ViewData["Title"] = "Practitioners Page";
+}
+
+<div class="w-full">
+    <section class="w-full">
+        <h1 class="text-[30px] font-bold text-[#001C37] mb-1">Practitioners</h1>
+
+        <div class="flex justify-between flex-col md:flex-row  items-center">
+            <p class="text-[#43474F] font-normal text-[15px] w-full lg:w-[35%]">
+                Search practitioners, check their availability and keep their details up to date.
+            </p>
+            <div class="w-full flex justify-center  md:justify-end items-center ">
+                <a asp-action="Create"
+                   class="w-full md:w-fit py-1 px-4 text-center rounded-sm hover:bg-blue-700 transition-colors duration-300 text-white bg-blue-500">Add
+                    Practitioner
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-white border border-gray-400 w-full mt-10 flex justify-center items-center p-4 rounded-2xl">
+        <table class="w-full min-w-[640px] text-left text-sm">
+            <thead class="bg-gray-50 text-[#43474F] border-y border-gray-400">
+                <tr class="uppercase">
+                    <th class="px-4 py-3 font-semibold">Practitioner</th>
+                    <th class="px-4 py-3 font-semibold">personnel number</th>
+                    <th class="px-4 py-3 font-semibold">Role</th>
+                    <th class="px-4 py-3 font-semibold">Gender</th>
+                    <th class="px-4 py-3 font-semibold">Email Addresss</th>
+                    <th class="px-4 py-3 font-semibold">Invitation Status</th>
+                    <th class="px-4 py-3 font-semibold">Manage</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+
+                <div asp-validation-summary="ModelOnly" class="text-red-600 text-sm mb-4"></div>
+
+                @if (Model == null || Model.Count == 0)
+                {
+                    <tr>
+                        <td colspan="5" class="px-4 py-6 text-center text-gray-500">No practitioners found.</td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var practitioner in Model)
+                    {
+                        <tr class="group  hover:bg-[#CFD4E0] transition-colors duration-200">
+                            <td class="px-4 py-3">@practitioner?.Title @practitioner?.FullName</td>
+                            <td class="px-4 py-3">@practitioner?.PersonnelNumber</td>
+                            <td class="px-4 py-3">@practitioner?.Role</td>
+                            <td class="px-4 py-3">@practitioner?.Gender</td>
+                            <td class="px-4 py-3">@practitioner?.Email</td>
+
+                            @{
+                                var status = practitioner?.VerificationStatus ?? "";
+
+                                var badgeClass = status.ToLower() switch
+                                {
+                                    "pending" => "text-yellow-500",
+                                    "verified" => "text-green-500",
+                                    "expired" => "text-red-500",
+                                    _ => "text-brown-500"
+                                };
+                            }
+                            <td class="px-4 py-3 font-semibold uppercase @badgeClass">@status</td>
+                            <td class="px-4 py-3">
+                                <div class="row-actions flex justify-center items-center bg-white p-2 rounded-2xl gap-6">
+                                    <a asp-action="Update" asp-controller="practitioners" asp-route-id="@practitioner?.ID"
+                                       class="text-[#007BB9] hover:text-[#005f8f] duration-300 transition-colors"
+                                       aria-label="Edit practitioner">
+                                        <i class="fa-solid fa-pen-to-square text-base"></i>
+                                    </a>
+                                    <a asp-action="ConfirmDelete" asp-controller="practitioners"
+                                       asp-route-id="@practitioner?.ID" class="text-red-500 hover:text-red-700"
+                                       aria-label="Delete practitioner">
+                                        <i class="fa-solid fa-trash text-base"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </section>
+</div>
