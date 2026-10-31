@@ -8,6 +8,7 @@ import '../../../../shared/widgets/page_header.dart';
 import '../../../../shared/widgets/sky_background.dart';
 import '../../../notifications/presentation/widgets/notification_bell.dart';
 import '../viewModels/resources_provider.dart';
+import '../widgets/resource_contents.dart';
 import 'resources_screen.dart';
 
 class ResourceCategoryScreen extends StatefulWidget {
@@ -36,6 +37,7 @@ class _ResourceCategoryScreenState extends State<ResourceCategoryScreen> {
     final category = r.categoryById(widget.categoryId);
     final items = r.inCategory(widget.categoryId);
     final error = r.categoryError(widget.categoryId);
+    final staticContent = categoryContentFor(category?.name);
     return SkyBackground(
       child: SafeArea(
         child: ListView(
@@ -76,6 +78,13 @@ class _ResourceCategoryScreenState extends State<ResourceCategoryScreen> {
                   ),
                 ),
               ),
+            if (staticContent != null) ...[
+              GlassCard(
+                padding: const EdgeInsets.all(16),
+                child: staticContent,
+              ),
+              const SizedBox(height: 12),
+            ],
             if (error != null) ...[
               ErrorBanner(error),
               TextButton(
@@ -99,7 +108,7 @@ class _ResourceCategoryScreenState extends State<ResourceCategoryScreen> {
               const Padding(
                 padding: EdgeInsets.all(8),
                 child: Text(
-                  'No resources here yet. Please check back soon.',
+                  '',
                   textAlign: TextAlign.center,
                   style: TextStyle(color: Colors.white),
                 ),

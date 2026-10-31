@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../../core/theme/app_theme.dart';
-import '../../../../../auth/presentation/viewModels/auth_provider.dart';
-import '../../../../models/consent.dart';
-import '../../../viewModels/onboarding_provider.dart';
-import '../../../widgets/step_frame.dart';
-import '../../../widgets/submit_state.dart';
+import '../../../../../core/theme/app_theme.dart';
+import '../../../../auth/presentation/viewModels/auth_provider.dart';
+import '../../../models/consent.dart';
+import '../../viewModels/onboarding_provider.dart';
+import '../../widgets/step_frame.dart';
+import '../../widgets/submit_state.dart';
 
 class ConsentStep extends StatefulWidget {
   const ConsentStep({super.key});

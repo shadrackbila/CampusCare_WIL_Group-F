@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../../core/constants/options.dart';
-import '../../../../../../core/utils/validators.dart';
-import '../../../../../../shared/widgets/app_dropdown.dart';
-import '../../../../../../shared/widgets/app_text_field.dart';
-import '../../../../models/residence_info.dart';
-import '../../../viewModels/onboarding_provider.dart';
-import '../../../widgets/choice_chips_field.dart';
-import '../../../widgets/step_frame.dart';
-import '../../../widgets/submit_state.dart';
+import '../../../../../core/constants/options.dart';
+import '../../../../../core/utils/validators.dart';
+import '../../../../../shared/widgets/app_dropdown.dart';
+import '../../../../../shared/widgets/app_text_field.dart';
+import '../../../models/residence_info.dart';
+import '../../viewModels/onboarding_provider.dart';
+import '../../widgets/choice_chips_field.dart';
+import '../../widgets/step_frame.dart';
+import '../../widgets/submit_state.dart';
 
 class ResidenceStep extends StatefulWidget {
   const ResidenceStep({super.key});

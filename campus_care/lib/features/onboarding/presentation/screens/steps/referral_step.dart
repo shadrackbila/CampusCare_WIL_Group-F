@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../../core/constants/options.dart';
-import '../../../../../auth/presentation/viewModels/auth_provider.dart';
-import '../../../../models/referral_source.dart';
-import '../../../viewModels/onboarding_provider.dart';
-import '../../../widgets/choice_chips_field.dart';
-import '../../../widgets/step_frame.dart';
-import '../../../widgets/submit_state.dart';
+import '../../../../../core/constants/options.dart';
+import '../../../../auth/presentation/viewModels/auth_provider.dart';
+import '../../../models/referral_source.dart';
+import '../../viewModels/onboarding_provider.dart';
+import '../../widgets/choice_chips_field.dart';
+import '../../widgets/step_frame.dart';
+import '../../widgets/submit_state.dart';
 
 class ReferralStep extends StatefulWidget {
   const ReferralStep({super.key});

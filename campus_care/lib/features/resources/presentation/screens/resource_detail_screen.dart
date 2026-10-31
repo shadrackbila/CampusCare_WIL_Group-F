@@ -1,15 +1,16 @@
+import 'package:campus_care/features/notifications/presentation/widgets/notification_bell.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../shared/platform/external_launcher.dart';
-import '../../../../shared/widgets/app_button.dart';
-import '../../../../shared/widgets/glass_card.dart';
-import '../../../../shared/widgets/page_header.dart';
-import '../../../../shared/widgets/sky_background.dart';
-import '../../../notifications/presentation/widgets/notification_bell.dart';
+import '../../../../../../shared/platform/external_launcher.dart';
+import '../../../../../../shared/widgets/app_button.dart';
+import '../../../../../../shared/widgets/glass_card.dart';
+import '../../../../../../shared/widgets/page_header.dart';
+import '../../../../../../shared/widgets/sky_background.dart';
 import '../../models/safe_web_uri.dart';
 import '../../models/wellness_resource.dart';
 import '../viewModels/resources_provider.dart';
+import '../widgets/resource_contents.dart';
 
 class ResourceDetailScreen extends StatelessWidget {
   const ResourceDetailScreen({super.key, required this.resourceId});
@@ -24,6 +25,28 @@ class ResourceDetailScreen extends StatelessWidget {
         const SnackBar(content: Text('We could not open that link.')),
       );
     }
+  }
+
+  Widget _buildBody(BuildContext context, WellnessResource resource) {
+    // 1. Match by resource title (e.g. "Managing exam stress").
+    final byTitle = resourceContentFor(resource.title);
+    if (byTitle != null) return byTitle;
+
+    // 2. Match by the resource's category name.
+    final catId = resource.categoryId;
+    if (catId != null) {
+      final category = context.read<ResourcesProvider>().categoryById(catId);
+      final byCategory = categoryContentFor(category?.name);
+      if (byCategory != null) return byCategory;
+    }
+
+    // 3. Fall back to the body stored in Supabase.
+    if (resource.body != null && resource.body!.trim().isNotEmpty) {
+      return SelectableText(resource.body!);
+    }
+
+    // 4. Nothing to show.
+    return const SizedBox.shrink();
   }
 
   @override
@@ -59,11 +82,8 @@ class ResourceDetailScreen extends StatelessWidget {
                             style: const TextStyle(fontWeight: FontWeight.w600),
                           ),
                         ],
-                        if (resource.body != null &&
-                            resource.body!.trim().isNotEmpty) ...[
-                          const SizedBox(height: 16),
-                          SelectableText(resource.body!),
-                        ],
+                        const SizedBox(height: 16),
+                        _buildBody(context, resource),
                         if (link != null) ...[
                           const SizedBox(height: 20),
                           AppButton(

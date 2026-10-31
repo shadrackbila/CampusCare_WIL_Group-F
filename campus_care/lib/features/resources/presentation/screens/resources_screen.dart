@@ -1,13 +1,13 @@
+import 'package:campus_care/features/notifications/presentation/widgets/notification_bell.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../core/routing/app_router.dart';
-import '../../../../core/theme/app_theme.dart';
-import '../../../../shared/widgets/error_banner.dart';
-import '../../../../shared/widgets/glass_card.dart';
-import '../../../../shared/widgets/page_header.dart';
-import '../../../../shared/widgets/sky_background.dart';
-import '../../../notifications/presentation/widgets/notification_bell.dart';
+import '../../../../../../core/routing/app_router.dart';
+import '../../../../../../core/theme/app_theme.dart';
+import '../../../../../../shared/widgets/error_banner.dart';
+import '../../../../../../shared/widgets/glass_card.dart';
+import '../../../../../../shared/widgets/page_header.dart';
+import '../../../../../../shared/widgets/sky_background.dart';
 import '../../models/wellness_resource.dart';
 import '../viewModels/resources_provider.dart';
 

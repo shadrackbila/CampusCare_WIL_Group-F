@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../viewModels/onboarding_provider.dart';
-import '../../../widgets/step_frame.dart';
-import '../../../widgets/submit_state.dart';
+import '../../viewModels/onboarding_provider.dart';
+import '../../widgets/step_frame.dart';
+import '../../widgets/submit_state.dart';
 
 class ConcernsStep extends StatefulWidget {
   const ConcernsStep({super.key});
