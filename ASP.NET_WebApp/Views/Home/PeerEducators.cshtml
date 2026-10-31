@@ -1,6 +1,122 @@
+@model HomeModel
 @{
     ViewData["Title"] = "Dashboard";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>PeerEducators flow is not implemented yet.</p>
+<div class="w-full ">
+    <section class="w-full">
+        <h1 class="text-[30px] font-bold text-[#001C37] mb-1">Dashboard</h1>
+
+        <div class="flex justify-between items-center">
+            <div class="w-full">
+                <p class="text-[#43474F] font-normal text-[15px] w-full lg:w-[35%]">
+                    Your conversations and the students
+                    who have authorised you to see their information.
+                </p>
+            </div>
+
+  
+        </div>
+    </section>
+    
+    <section class="w-full mt-10 flex justify-center items-center">
+        <div class="grid  md:grid-cols-2  gap-4 w-full">
+
+         
+
+            <!--  students -->
+            <div class="flex justify-center items-center p-4 rounded-2xl bg-white border border-gray-400 gap-2">
+                <div class="bg-[#FAF5FF] rounded-full p-3">
+                    <i class="fa-solid fa-user-graduate text-xl text-[#7E22CE]"></i>
+                </div>
+                <div>
+                    <p class="text-[#001C37] text-[24px] font-bold">@Model?.Students?.Count()</p>
+                    <p class="text-[#43474F] ">Students</p>
+                </div>
+            </div>
+
+            <!-- Refferals sent -->
+            <div class="flex justify-center items-center p-4 rounded-2xl bg-white border border-gray-400 gap-2">
+                <div class="bg-[#F0F9FF] rounded-full p-3">
+                    <i class="fa-solid fa-paper-plane text-xl text-[#003366]"></i>
+                </div>
+                <div>
+                    <p class="text-[#001C37] text-[24px] font-bold">@Model?.Refferals?.Count()</p>
+                    <p class="text-[#43474F] ">Refferals sent</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="bg-white border border-gray-400 w-full mt-10 p-4 rounded-2xl overflow-x-auto">
+        <table class="w-full min-w-[640px] text-left text-sm">
+            <thead class="bg-gray-50 text-[#43474F]  border-y border-gray-400">
+                <tr class="uppercase">
+                    <th class="px-4 py-3 font-semibold">Student</th>
+                    <th class="px-4 py-3 font-semibold">Student number</th>
+            
+                    <th class="px-4 py-3 font-semibold">Status</th>
+
+             
+                    <th class="px-4 py-3 font-semibold text-center">Send a Refferal</th>
+                    
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+                @if (Model == null || Model?.Students?.Count() == 0)
+                {
+                    <tr>
+                        <td colspan="5" class="px-4 py-6 text-center text-gray-500">No students found.</td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var student in Model?.Students)
+                    {
+                        <tr class="group cursor-pointer hover:bg-[#CFD4E0] transition-colors duration-200">
+                            <td class="px-4 py-3">@student?.FirstName @student?.Surname</td>
+                            <td class="px-4 py-3">@student?.StudentNumber</td>
+                 
+                
+
+                            @{
+                                var referral = Model.Refferals?.FirstOrDefault(r => r.StudentID == student?.id.ToString());
+
+                                var status = referral?.RefferalsStaus ?? "";
+
+                                var badgeClass = status.ToLower() switch
+                                {
+                                    "pending" => "text-yellow-500",
+                                    "complete" => "text-green-500",
+                                    "in_progress" => "text-blue-500",
+                                    _ => "text-red-500"
+                                };
+                            }
+                            <td class="px-4 py-3 font-semibold uppercase @badgeClass">@status</td>
+
+                    
+                            <td class="px-4 py-3">
+                                <div class="row-actions flex justify-center items-center bg-white p-2 rounded-2xl gap-6">
+                                    @if (string.IsNullOrEmpty(status))
+                                    {
+                                        <a asp-action="Create" asp-controller="Refferals" asp-route-studentId="@student?.id"
+                                           class="text-[#007BB9] hover:text-[#005f8f] w-full h-full text-center"
+                                           title="Send referral" aria-label="Send referral">
+                                            <i class="fa-solid fa-paper-plane text-base"></i>
+                                        </a>
+                                    }
+                                </div>
+                            </td>
+                            
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </section>
+
+    
+</div>
+
+

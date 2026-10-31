@@ -77,7 +77,7 @@
 
 
         @* Grid section *@
-        <div class="grid grid-cols-2 gap-4 mt-10">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-10">
 
             @* 1 *@
             <div class="relative bg-[#F8F9FF] mt-5 border border-gray-400 rounded-2xl p-4 pt-10 w-full">
@@ -130,10 +130,10 @@
                         <span class="text-gray-500">@Model.Gender</span>
                     </div>
 
-                    <div class="mt-2">
+                    @* <div class="mt-2">
                         <span class="text-[#0B1C30] font-bold">ID / Passport Number :</span>
                         <span class="text-gray-500">@Model.IdOrPassportNumber</span>
-                    </div>
+                    </div> *@
 
                     <div class="mt-2">
                         <span class="text-[#0B1C30] font-bold">Nationality :</span>
@@ -171,8 +171,8 @@
                         <i class="fa-solid fa-people-roof text-md"></i>
                     </div>
                     <div
-                        class="-ml-5 pl-7 pr-5 py-1 bg-[#ED8C37] font-bold rounded-lg border-2 border-white whitespace-nowrap">
-                        2. Next of Kin / Emergency Contact
+                        class="-ml-5 pl-7 pr-5 py-1 flex flex-col md:flex-row bg-[#ED8C37] font-bold rounded-lg border-2 border-white whitespace-nowrap">
+                        <span>2. Next of Kin /</span><span class="ml-1">Emergency Contact</span>
                     </div>
                 </div>
 
@@ -331,7 +331,116 @@
         
         </div>
 
+
+        @{
+
+ 
+            var checkIns = (Model?.EmotionalCheckIns ?? new List<EmotionalCheckInModel>())
+                .OrderByDescending(c => c.CreatedAt)
+                .ToList();
+
+            Func<int?, string> stressText = v => v switch
+                    {
+                        1 => "Very low",
+                        2 => "Low",
+                        3 => "Moderate",
+                        4 => "High",
+                        5 => "Very high",
+                        _ => "Not recorded"
+                    };
+
+            Func<int?, string> copingText = v => v switch
+            {
+                1 => "Struggling a lot",
+                2 => "Struggling a little",
+                3 => "Managing okay",
+                4 => "Coping well",
+                5 => "Coping very well",
+                _ => "Not recorded"
+            };
+
+            Func<int?, string> supportText = v => v switch
+            {
+                1 => "No support",
+                2 => "A little support",
+                3 => "Some support",
+                4 => "Good support",
+                5 => "Strong support",
+                _ => "Not recorded"
+            };
+        }
+
+        <div class="relative bg-[#F8F9FF] mt-20 border border-gray-400 rounded-2xl p-4 pt-10 w-full">
+
+            <div class="absolute -top-6 left-4 flex items-center text-white">
+                <div class="relative z-10 flex items-center justify-center w-12 h-12 rounded-full
+                    bg-[#0B1C30] border-2 border-white">
+                    <i class="fa-solid fa-face-smile text-xs"></i>
+                </div>
+                <div
+                    class="-ml-5 pl-7 pr-5 py-1 bg-[#0B1C30] font-bold rounded-lg border-2 border-white whitespace-nowrap">
+                    Mood Check-Ins
+                </div>
+            </div>
+
+            @if (checkIns.Count == 0)
+            {
+                <div class="mt-7">
+                    <span class="text-gray-500 font-semibold">No mood check-ins yet.</span>
+                </div>
+            }
+            else
+            {
+                <div class="mt-4 space-y-4">
+                    @foreach (var c in checkIns)
+                    {
+                        var emotions = c.Emotions != null && c.Emotions.Length > 0
+                            ? string.Join(", ", c.Emotions)
+                            : "Not recorded";
+
+                        <div class="border-b border-gray-300 pb-3 last:border-b-0 last:pb-0">
+                            <div class="mt-2">
+                                <span class="text-[#0B1C30] font-bold">Date :</span>
+                                <span class="text-gray-500">@string.Format("{0:dd MMM yyyy, HH:mm}", c.CreatedAt)</span>
+                            </div>
+
+                            <div class="mt-2">
+                                <span class="text-[#0B1C30] font-bold">Emotions :</span>
+                                <span class="text-gray-500">@emotions</span>
+                            </div>
+
+                            <div class="mt-2">
+                                <span class="text-[#0B1C30] font-bold">Intensity :</span>
+                                <span class="text-gray-500">@(c.Intensity?.ToString() ?? "Not recorded")</span>
+                            </div>
+
+                            <div class="mt-2">
+                                <span class="text-[#0B1C30] font-bold">Stress :</span>
+                                <span class="text-gray-500">@stressText(c.StressLevel) (@c.StressLevel/5)</span>
+                            </div>
+
+                            <div class="mt-2">
+                                <span class="text-[#0B1C30] font-bold">Coping :</span>
+                                <span class="text-gray-500">@copingText(c.CopingLevel) (@c.CopingLevel/5)</span>
+                            </div>
+
+                            <div class="mt-2">
+                                <span class="text-[#0B1C30] font-bold">Support :</span>
+                                <span class="text-gray-500">@supportText(c.SupportLevel) (@c.SupportLevel/5)</span>
+                            </div>
+
+                            <div class="mt-2">
+                                <span class="text-[#0B1C30] font-bold">Notes :</span>
+                                <span class="text-gray-500">@(string.IsNullOrWhiteSpace(c.Notes) ? "None" : c.Notes)</span>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+
     </section>
 
 
 </div>
+

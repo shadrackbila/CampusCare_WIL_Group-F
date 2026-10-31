@@ -1,0 +1,159 @@
+﻿@model List<RefferalsModel>
+@{
+    ViewData["Title"] = "Refferals Page";
+}
+
+<div class="w-full">
+    <section class="w-full">
+        <h1 class="text-[30px] font-bold text-[#001C37] mb-1">Student Refferals</h1>
+
+        <div class="flex justify-between items-center">
+            <div class="w-full">
+                <p class="text-[#43474F] font-normal text-[15px] w-full lg:w-[35%]">Review students referred by peer
+                    educators and coordinate their next steps in care.</p>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- Stats -->
+        <section class="w-full mt-10 flex justify-center items-center">
+            <div class="grid  md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
+
+                <!-- Total Refferals -->
+                <div class="flex  justify-center items-center p-4 rounded-2xl bg-white border border-gray-400 gap-2">
+                    <div class="bg-[#E5EEFF] rounded-full p-3">
+                        <i class="fa-solid fa-users text-xl   text-center text-[#003366]"></i>
+                    </div>
+                    <div>
+                        <p class="text-[#001C37] text-[24px] font-bold">@Model.Count()</p>
+                        <p class="text-[#43474F] ">Total Refferals</p>
+                    </div>
+                </div>
+
+
+                <!-- Pending Review -->
+                @* <div class="flex justify-center items-center p-4 rounded-2xl bg-white border border-gray-400 gap-2">
+                    <div class="bg-[#ECFDF5] rounded-full p-3">
+                        <i class="fa-solid fa-hourglass-half text-2xl text-[#047857]"></i>
+                    </div>
+                    <div>
+                        <p class="text-[#001C37] text-[24px] font-bold">@Model.Count(r => r.RefferalsStaus == "pending")</p>
+                        <p class="text-[#43474F] ">Pending Review</p>
+                    </div>
+                </div> *@
+
+                <!-- In-Progress -->
+                <div class="flex justify-center items-center p-4 rounded-2xl bg-white border border-gray-400 gap-2">
+                    <div class="bg-[#FAF5FF] rounded-full p-3">
+                        <i class="fa-solid fa-spinner text-2xl text-[#7E22CE]"></i>
+                    </div>
+                    <div>
+                        <p class="text-[#001C37] text-[24px] font-bold">@Model.Count(r => r.RefferalsStaus == "in_progress")
+                        </p>
+                        <p class="text-[#43474F] ">In-Progress</p>
+                    </div>
+                </div>
+
+                <!-- Completed -->
+                <div class="flex justify-center items-center p-4 rounded-2xl bg-white border border-gray-400 gap-2">
+                    <div class="bg-[#F0F9FF] rounded-full p-3">
+                        <i class="fa-solid fa-circle-check text-2xl text-[#003366]"></i>
+                    </div>
+                    <div>
+                        <p class="text-[#001C37] text-[24px] font-bold">@Model.Count(r => r.RefferalsStaus == "complete")
+                        </p>
+                        <p class="text-[#43474F] ">Completed</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section
+            class="bg-white border flex-col gap-4  overflow-hidden border-gray-400 overflow-x-auto  w-full mt-10 flex justify-center items-center p-4 rounded-2xl">
+
+            <div class="w-full ">
+                <form method="get" asp-controller="Refferals" asp-action="Search" class="w-full">
+                    <div class="flex w-full">
+                        <input name="searchTerm" value="@ViewData["SearchTerm"]"
+                               placeholder="Search by student number / peer educator email"
+                               class="w-full py-2 pl-3 rounded-l-md border border-r-0 focus:outline-none" type="text">
+                        <button type="submit" class="px-4 py-2 rounded-r-md bg-[#003366] text-white hover:opacity-90">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <table class="w-full min-w-[640px] overflow-hidden text-left text-sm">
+                <thead class="bg-gray-50 text-[#43474F] border-y border-gray-400">
+                    <tr class="uppercase">
+                        <th class="px-4 py-3 font-semibold">Student</th>
+                        <th class="px-4 py-3 font-semibold">Student Number</th>
+                        <th class="px-4 py-3 font-semibold">Reffered By</th>
+                        <th class="px-4 py-3 font-semibold">Refferal Date</th>
+                        <th class="px-4 py-3 font-semibold">Support Reason</th>
+                        <th class="px-4 py-3 font-semibold">Refferal Status</th>
+                        <th class="px-4 py-3 font-semibold">Send Invitation Message</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+
+                    <div asp-validation-summary="ModelOnly" class="text-red-600 text-sm mb-4"></div>
+
+                    @if (Model == null || Model.Count == 0)
+                    {
+                        <tr>
+                            <td colspan="5" class="px-4 py-6 text-center text-gray-500">No Refferals found.</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var refferal in Model)
+                        {
+                            <tr class="group  hover:bg-[#CFD4E0] transition-colors duration-200">
+                                <td class="px-4 py-3">@refferal?.Student?.FirstName @refferal?.Student?.Surname</td>
+                                <td class="px-4 py-3">@refferal?.Student?.StudentNumber</td>
+                                <td class="px-4 py-3"> @($"{refferal?.PeerEducator?.Title} {refferal?.PeerEducator?.FullName} ({refferal?.PeerEducator?.PersonnelNumber})")</td>
+                                <td class="px-4 py-3 whitespace-nowrap">
+                                    <span class="text-[#001E40] font-medium">@refferal?.RefferalDate.ToString("dd MMM yyyy")</span>
+                                    <span class="text-gray-500">| @refferal?.RefferalDate.ToString(@"hh\:mm")</span>
+                                </td>
+                                <td class="px-4 py-3">@refferal?.SupportReason</td>
+                          
+
+                                @{
+                                    var status = refferal?.RefferalsStaus ?? "";
+
+                                    var badgeClass = status.ToLower() switch
+                                    {
+                                        "pending" => "text-yellow-500",
+                                        "complete" => "text-green-500",
+                                        "in_progress" => "text-blue-500",
+                                        _ => "text-red-500"
+                                    };
+                                }
+                                <td class="px-4 py-3 font-semibold uppercase @badgeClass">@status</td>
+                                <td class="px-4 py-3">
+                                    <div class="row-actions flex justify-center items-center bg-white p-2 rounded-2xl gap-6">
+                                        @if (refferal?.RefferalsStaus != "complete")
+                                        {
+                                            <a asp-action="SendInvitation" asp-controller="practitioners"
+                                               asp-route-studentId="@refferal?.StudentID" asp-route-userId="@refferal?.Student?.UserID"
+                                               class="text-blue-600  hover:text-blue-800" aria-label="Send invitation"
+                                               title="Send invitation">
+                                                <i class="fa-solid fa-paper-plane text-base"></i>
+                                            </a>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </section>
+
+    </div>

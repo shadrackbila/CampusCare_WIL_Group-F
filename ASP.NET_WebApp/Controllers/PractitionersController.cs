@@ -1,4 +1,3 @@
-
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using ASP.NET_WebApp.Models;
@@ -16,11 +15,16 @@ public class PractitionersController : Controller
     private readonly ILogger<PractitionersController> _logger;
 
     private readonly IConfiguration _config;
-    public PractitionersController(ILogger<PractitionersController> logger, Client SupabaseClient, IConfiguration config)
+
+    private readonly Client _adminDb;
+
+    public PractitionersController(ILogger<PractitionersController> logger, Client SupabaseClient, IConfiguration config, [FromKeyedServices("admin")] Client adminDb)
     {
         _supabaseClient = SupabaseClient;
         _logger = logger;
         _config = config;
+        _adminDb = adminDb;
+
     }
 
 
@@ -76,6 +80,9 @@ public class PractitionersController : Controller
 
             var admin = _supabaseClient.AdminAuth(_config["Supabase:ServiceRoleKey"] ?? "");
 
+            await _adminDb.From<RefferalsModel>().Where(r => r.PeerEducatorID == practitioner.UserID).Delete();
+            await _adminDb.From<AvailabilityModel>().Where(a => a.PractitionerID == practitioner.ID).Delete();
+
             string? authEmail = practitioner.Email;
             await _supabaseClient.From<PractitionerModel>().Where(a => a.ID == id).Delete();
 
@@ -99,6 +106,7 @@ public class PractitionersController : Controller
         }
         catch (Exception error)
         {
+            Console.WriteLine($"Error : {error}");
             ViewBag.Error = "Practioner still has student appointmnts.";
             return View("_NotFound");
         }
@@ -173,9 +181,25 @@ public class PractitionersController : Controller
 
             await adminDb.From<UserRoles>().Insert(userRole);
 
+            // testacconunt733@gmail.com
+
             practitioner.UserID = user.Id;
             await adminDb.From<PractitionerModel>().Insert(practitioner);
 
+            AvailabilityModel avail = new AvailabilityModel();
+
+            avail.PractitionerID = practitioner.ID;
+            avail.StartTime = new TimeOnly(8, 0);
+            avail.EndTime = new TimeOnly(16, 0);
+            avail.IsReccuring = true;
+            avail.Availability = true;
+
+            for (int day = 1; day <= 5; day++)
+            {
+                avail.ID = Guid.NewGuid().ToString();
+                avail.DayOfWeek = day;
+                await adminDb.From<AvailabilityModel>().Insert(avail);
+            }
 
             return RedirectToAction("Index");
         }
@@ -259,6 +283,34 @@ public class PractitionersController : Controller
         }
     }
 
+    [HttpGet]
+    [Authorize(Roles = "admin")]
+    [Authorize]
+    public async Task<IActionResult> SendInvitation(string userId, string studentId)
+    {
+        if (userId.IsNullOrEmpty() || studentId.IsNullOrEmpty())
+        {
+            return View("_NotFound");
+        }
+
+        NotificationModel notification = new NotificationModel();
+
+        notification.id = Guid.NewGuid().ToString();
+        notification.UserID = userId;
+        notification.Title = "Appointment Referral";
+        notification.Body = "Our peer educator has noticed some concerns and recommends that you book an appointment with one of our counsellors. Please schedule a session at your earliest convenience.";
+        notification.IsRead = false;
+        notification.Type = "appointment_cancelled";
+        await _adminDb.From<NotificationModel>().Insert(notification);
+
+        await _adminDb
+.From<RefferalsModel>()
+.Where(r => r.StudentID == studentId)
+.Set(r => r.RefferalsStaus, "complete")
+.Update();
+
+        return RedirectToAction("Index", "Refferals");
+    }
 
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

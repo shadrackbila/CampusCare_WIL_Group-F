@@ -1,3 +1,5 @@
+const desktopQuery = window.matchMedia('(min-width: 1024px)');
+
 function sideBar(isOpen) {
 
     const element = document.getElementById("sidebar");
@@ -18,3 +20,6 @@ function sideBar(isOpen) {
     }
 
 }
+
+sideBar(desktopQuery.matches);
+desktopQuery.addEventListener('change', e => sideBar(e.matches));

@@ -12,12 +12,12 @@
     <link rel="stylesheet" href="~/lib/fontawesome/css/all.min.css" asp-append-version="true" />
 </head>
 
-<body class="bg-[#F8F9FF] flex justify-center items-center flex-col relative ">
+<body class="bg-[#F8F9FF]  flex justify-center items-center flex-col relative ">
     <header class=" w-full sticky top-0 z-50">
         <nav
-            class="w-full navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow  ">
+            class="w-full  navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow  ">
 
-            <div class="ml-10 w-full">
+            <div class="ml-10 w-fit  md:w-full">
                 <button id="openBtn" class="hidden" onclick="sideBar(true)">
                     <i class="fa-solid fa-bars"></i>
                 </button>
@@ -26,21 +26,24 @@
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
+            
 
-            <div class="w-full flex justify-end items-center px-4 py-2">
+            <div class="w-fit md:w-full  flex justify-end items-center px-4 py-2">
                 <div class="flex justify-center items-center gap-4">
 
                 
                     <div class="flex justify-center items-center gap-2">
                    
-                        <i class="fa-solid fa-circle-user  text-3xl "></i>
-                        
+                        <div class="w-fit hidden md:flex">
+                            <i class="fa-solid fa-circle-user  text-3xl "></i>
+                        </div>
+                       
                         @if (User.Identity?.IsAuthenticated == true)
                         {
                             var fullName = User.Identity?.Name ?? "";
                             var role = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value ?? "";
 
-                            <div>
+                            <div class="text-right md:text-left">
                                 <div class="text-[13px] font-semibold text-[#001C37]">@fullName</div>
                                 <div class="text-[11px] font-semibold text-[#43474F]">@role</div>
                             </div>
@@ -58,13 +61,14 @@
         @* Side bar *@
         @* ------------------------------ *@
         <div id="sidebar"
-             class="bg-[#001E40] w-64 sticky top-[var(--header-h,64px)] self-start h-[calc(100vh-64px)] shrink-0  py-10 px-3">
+             class="bg-[#001E40] z-50 w-64 fixed  lg:sticky top-[var(--header-h,64px)] self-start h-[calc(100vh-64px)] shrink-0  py-10 px-3">
             <div class="w-full bg-white">
                 <img class="w-[50%]" src="~/assets/imgs/cut_logo.png" alt="Logo">
             </div>
 
             <div class="w-full ">
                 <ul class="w-full flex flex-col items-start justify-center  mt-10 text-white">
+
 
 
                     @if (User.Identity?.IsAuthenticated == true)
@@ -91,7 +95,8 @@
                                 break;
                         }
 
-                        <a asp-controller="Home" asp-action="@DashAction" class="hover:bg-[#007BB9] w-full my-1 rounded-lg">
+                        <a asp-controller="Home" asp-action="@DashAction"
+                           class="hover:bg-[#007BB9] @Active("Home", $"{@DashAction}") w-full my-1 rounded-lg">
                             <li class="w-full flex justify-start items-center gap-2 my-2 pl-3">
                                 <i class="fa-solid fa-table-cells-large text-2xl "></i>
                                 <p class="text-base">Dashboard</p>
@@ -100,8 +105,8 @@
 
                         @if (role == "practitioner")
                         {
-                            <a class="hover:bg-[#007BB9] w-full my-1 rounded-lg" asp-controller="Appointments"
-                               asp-action="AppointmentsForPract">
+                            <a class="hover:bg-[#007BB9] w-full my-1 @Active("Appointments", "AppointmentsForPract") @Active("Students", "GetStudent") rounded-lg"
+                               asp-controller="Appointments" asp-action="AppointmentsForPract">
                                 <li class="w-full flex justify-start items-center gap-2 my-2 pl-3">
                                     <i class="fa-solid fa-calendar-check text-2xl w-8 text-center"></i>
                                     <p class="text-base">Appointment</p>
@@ -111,26 +116,35 @@
 
                         @if (role == "admin")
                         {
-                            <a class="hover:bg-[#007BB9] w-full my-1 rounded-lg" asp-controller="Practitioners"
-                               asp-action="Index">
+                            <a class="hover:bg-[#007BB9] w-full my-1 @Active("Practitioners", "Index") rounded-lg"
+                               asp-controller="Practitioners" asp-action="Index">
                                 <li class="w-full flex justify-start items-center gap-2 my-2 pl-3">
                                     <i class="fa-solid fa-user-doctor text-2xl w-8 text-center"></i>
-                                    <p class="text-base">Practitioners</p>
+                                    <p class="text-base">Staff</p>
                                 </li>
                             </a>
 
-                            <a class="hover:bg-[#007BB9] w-full my-1 rounded-lg" asp-controller="Appointments"
-                               asp-action="Index">
+                            <a class="hover:bg-[#007BB9] w-full my-1 @Active("Appointments", "Index") rounded-lg"
+                               asp-controller="Appointments" asp-action="Index">
                                 <li class="w-full flex justify-start items-center gap-2 my-2 pl-3">
                                     <i class="fa-solid fa-calendar-check text-2xl w-8 text-center"></i>
                                     <p class="text-base">Appointment</p>
                                 </li>
                             </a>
 
-                            <a class="hover:bg-[#007BB9] w-full my-1 rounded-lg" asp-controller="Students" asp-action="Index">
+                            <a class="hover:bg-[#007BB9] @Active("Students", "Index") @Active("Students", "GetStudent") w-full my-1 rounded-lg"
+                               asp-controller="Students" asp-action="Index">
                                 <li class="w-full flex justify-start items-center gap-2 my-2 pl-3">
                                     <i class="fa-solid fa-user-graduate text-2xl w-8 text-center"></i>
                                     <p class="text-base">Students</p>
+                                </li>
+                            </a>
+
+                            <a class="hover:bg-[#007BB9] @Active("Refferals", "Index") @Active("Refferals", "Search") w-full my-1 rounded-lg"
+                               asp-controller="Refferals" asp-action="Index">
+                                <li class="w-full flex justify-start items-center gap-2 my-2 pl-3">
+                                    <i class="fa-solid fa-user-plus text-2xl w-8 text-center"></i>
+                                    <p class="text-base">Students Refferals</p>
                                 </li>
                             </a>
                         }
@@ -153,6 +167,8 @@
             </div>
         </div>
 
+
+
         @* ------------------------------ *@
         @* Content *@
         @* ------------------------------ *@
@@ -171,11 +187,18 @@
     </div>
 
  
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/js/sideBar.js"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+<script src="~/js/sideBar.js"></script>
+@await RenderSectionAsync("Scripts", required: false)
+
+@functions {
+    string Active(string controller, string action) =>
+        ViewContext.RouteData.Values["controller"]?.ToString() == controller &&
+        ViewContext.RouteData.Values["action"]?.ToString() == action
+            ? "bg-[#007BB9]" : "";
+}
 </body>
 
 </html>

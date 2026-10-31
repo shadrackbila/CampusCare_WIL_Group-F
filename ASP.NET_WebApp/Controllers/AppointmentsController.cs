@@ -227,7 +227,7 @@ public class AppointmentsController : Controller
     private async Task LoadPractitioners()
     {
         var response = await _supabaseClient.From<PractitionerModel>().Get();
-        ViewBag.Practitioners = response.Models;
+        ViewBag.Practitioners = response.Models.Where(p => p.VerificationStatus == "verified").ToList();
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

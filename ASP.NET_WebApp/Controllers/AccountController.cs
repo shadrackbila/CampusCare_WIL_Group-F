@@ -137,6 +137,7 @@ public class AccountController : Controller
                     new Claim(ClaimTypes.Email, session.User.Email ?? model.UserName)
                     };
 
+
                 if (userRoles != null)
                 {
                     _logger.LogError($"User is : -------> {userRoles.UserRole}");

@@ -59,7 +59,7 @@
         </div>
     </div>
 
-    <ul class="flex-1 space-y-4 min-w-[220px]">
+    <ul class="flex-1 space-y-4 min-w-[220px] hidden lg:flex flex-col">
         @foreach (var key in statusKeys)
         {
             var count = statuses.Count(s => s == key);

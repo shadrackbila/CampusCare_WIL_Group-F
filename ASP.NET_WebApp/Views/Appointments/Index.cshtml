@@ -11,7 +11,7 @@
 
         <div class="flex justify-between items-center">
             <p class="text-[#43474F] font-normal text-[15px] w-full lg:w-[50%]">
-                Search appointments, check their status and keep schedules up to date.
+                Appointments, check their status and keep schedules up to date.
             </p>
         </div>
     </section>
@@ -41,7 +41,9 @@
                 }
                 else
                 {
-                    @foreach (var appointment in Model)
+                    @foreach (var appointment in Model
+                        .OrderByDescending(a => a.AppointmentDate)
+                        .ThenByDescending(a => a.AppointmentTime))
                     {
                         <tr class="group cursor-pointer hover:bg-[#CFD4E0] transition-colors duration-200"
                             data-href="@Url.Action("GetStudent", "Students", new { id = @appointment?.Student?.id })">

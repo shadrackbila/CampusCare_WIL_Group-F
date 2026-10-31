@@ -7,26 +7,27 @@
 
 <div class="w-full">
     <section class="w-full">
-        <h1 class="text-[30px] font-bold text-[#001C37] mb-1">Practitioners</h1>
+        <h1 class="text-[30px] font-bold text-[#001C37] mb-1">Staff</h1>
 
         <div class="flex justify-between flex-col md:flex-row  items-center">
             <p class="text-[#43474F] font-normal text-[15px] w-full lg:w-[35%]">
-                Search practitioners, check their availability and keep their details up to date.
+                Staff, check their availability and keep their details up to date.
             </p>
             <div class="w-full flex justify-center  md:justify-end items-center ">
                 <a asp-action="Create"
                    class="w-full md:w-fit py-1 px-4 text-center rounded-sm hover:bg-blue-700 transition-colors duration-300 text-white bg-blue-500">Add
-                    Practitioner
+                    Staff
                 </a>
             </div>
         </div>
     </section>
 
-    <section class="bg-white border border-gray-400 w-full mt-10 flex justify-center items-center p-4 rounded-2xl">
-        <table class="w-full min-w-[640px] text-left text-sm">
+    <section
+        class="bg-white border overflow-hidden border-gray-400 overflow-x-auto  w-full mt-10 flex justify-center items-center p-4 rounded-2xl">
+        <table class="w-full min-w-[640px] overflow-hidden text-left text-sm">
             <thead class="bg-gray-50 text-[#43474F] border-y border-gray-400">
                 <tr class="uppercase">
-                    <th class="px-4 py-3 font-semibold">Practitioner</th>
+                    <th class="px-4 py-3 font-semibold">Staff</th>
                     <th class="px-4 py-3 font-semibold">personnel number</th>
                     <th class="px-4 py-3 font-semibold">Role</th>
                     <th class="px-4 py-3 font-semibold">Gender</th>
@@ -42,7 +43,7 @@
                 @if (Model == null || Model.Count == 0)
                 {
                     <tr>
-                        <td colspan="5" class="px-4 py-6 text-center text-gray-500">No practitioners found.</td>
+                        <td colspan="5" class="px-4 py-6 text-center text-gray-500">No Staff found.</td>
                     </tr>
                 }
                 else

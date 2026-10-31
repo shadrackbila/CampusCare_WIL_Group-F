@@ -34,6 +34,7 @@ public class StudentsController : Controller
         try
         {
 
+
             var response = await _supabase.From<StudentsModel>().Get();
 
             _logger.LogInformation("Loaded {Count} students", response.Models.Count);
@@ -49,6 +50,7 @@ public class StudentsController : Controller
     }
 
     // [Authorize(Roles = "admin")]
+    // [Authorize(Roles = "practitioner")]
     [Authorize]
     public async Task<IActionResult> GetStudent(string id)
     {
@@ -141,7 +143,7 @@ public class StudentsController : Controller
     private async Task LoadPractitioners()
     {
         var response = await _supabase.From<PractitionerModel>().Get();
-        ViewBag.Practitioners = response.Models;
+        ViewBag.Practitioners = response.Models.Where(p => p.VerificationStatus == "verified").ToList();
     }
 
 

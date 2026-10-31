@@ -1,0 +1,51 @@
+@using System.Globalization
+@using ASP.NET_WebApp.Models
+@model IEnumerable<EmotionalCheckInModel>
+
+@{
+    var list = Model?.ToList() ?? new List<EmotionalCheckInModel>();
+    var inv = CultureInfo.InvariantCulture;
+
+    double stress = list.Average(c => c.StressLevel) ?? 0;
+    double coping = list.Average(c => c.CopingLevel) ?? 0;
+    double support = list.Average(c => c.SupportLevel) ?? 0;
+
+    string[] labels = { "Stress", "Coping", "Support" };
+    double[] values = { stress, coping, support };
+    string[] colors = { "#9333EA", "#059669", "#003366" };
+    double maxScale = 5.0;
+}
+
+<div class="flex w-full">
+    <div class="flex flex-col justify-between h-[160px] mt-[28px] pr-3 text-[12px] text-gray-300 text-right">
+        @for (int i = 5; i >= 0; i--)
+        {
+            <span>@(i + ".0")</span>
+        }
+    </div>
+
+    <div class="flex flex-1 justify-around">
+        @for (int i = 0; i < labels.Length; i++)
+        {
+            var pct = Math.Min(values[i] / maxScale * 100, 100).ToString("0.##", inv);
+            var fillStyle = "height:" + pct + "%;background-color:" + colors[i];
+            var textStyle = "color:" + colors[i];
+            var valueText = values[i].ToString("0.0", inv);
+
+            <div class="flex flex-col items-center w-[80px]">
+                <span class="h-[28px] text-[16px] font-bold" style="@textStyle">@valueText</span>
+
+                <div class="relative w-full h-[160px] rounded-t-2xl bg-[#E3ECFF] overflow-hidden">
+                    <div class="absolute bottom-0 w-full rounded-t-2xl" style="@fillStyle"></div>
+                </div>
+
+                <span class="mt-2 text-[14px] text-[#001C37]">@labels[i]</span>
+            </div>
+        }
+    </div>
+</div>
+
+@if (list.Count == 0)
+{
+    <p class="text-center text-sm text-gray-400 mt-2">No check-ins yet.</p>
+}

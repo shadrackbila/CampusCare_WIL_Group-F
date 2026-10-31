@@ -14,6 +14,9 @@ public class StudentsModel : BaseModel
     [PrimaryKey("id")]
     public string id { get; set; } = string.Empty;
 
+    [Column("user_id")]
+    public string UserID { get; set; } = string.Empty;
+
     [Required(ErrorMessage = "The Student Number is required.")]
     [Column("student_number")]
     public string StudentNumber { get; set; } = string.Empty;
@@ -84,6 +87,9 @@ public class StudentsModel : BaseModel
 
     [Reference(typeof(PractitionerModel), ReferenceAttribute.JoinType.Left)]
     public PractitionerModel? AssignedPractitionerInfo { get; set; }
+
+    [Reference(typeof(EmotionalCheckInModel), ReferenceAttribute.JoinType.Left)]
+    public List<EmotionalCheckInModel> EmotionalCheckIns { get; set; } = new();
 
 
 }
