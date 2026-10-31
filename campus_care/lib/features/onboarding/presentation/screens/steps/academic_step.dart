@@ -6,6 +6,7 @@ import '../../../../../core/utils/validators.dart';
 import '../../../../../shared/widgets/app_text_field.dart';
 import '../../../models/academic_info.dart';
 import '../../viewModels/onboarding_provider.dart';
+import '../../widgets/academic_dropdowns.dart';
 import '../../widgets/choice_chips_field.dart';
 import '../../widgets/step_frame.dart';
 import '../../widgets/submit_state.dart';
@@ -20,10 +21,10 @@ class AcademicStep extends StatefulWidget {
 class _AcademicStepState extends State<AcademicStep>
     with SubmitState<AcademicStep> {
   final _formKey = GlobalKey<FormState>();
-  late final TextEditingController _faculty;
-  late final TextEditingController _department;
-  late final TextEditingController _qualification;
   late final TextEditingController _campusOther;
+  String? _faculty;
+  String? _department;
+  String? _programme;
   String? _year;
   String? _mode;
   String? _campus;
@@ -34,9 +35,9 @@ class _AcademicStepState extends State<AcademicStep>
     final a =
         context.read<OnboardingProvider>().snapshot.academic ??
         const AcademicInfo();
-    _faculty = TextEditingController(text: a.faculty);
-    _department = TextEditingController(text: a.department);
-    _qualification = TextEditingController(text: a.qualification);
+    _faculty = a.faculty.isEmpty ? null : a.faculty;
+    _department = a.department.isEmpty ? null : a.department;
+    _programme = a.qualification.isEmpty ? null : a.qualification;
     _campusOther = TextEditingController(text: a.campusOther);
     _year = a.yearOfStudy;
     _mode = a.studyMode;
@@ -45,9 +46,7 @@ class _AcademicStepState extends State<AcademicStep>
 
   @override
   void dispose() {
-    for (final c in [_faculty, _department, _qualification, _campusOther]) {
-      c.dispose();
-    }
+    _campusOther.dispose();
     super.dispose();
   }
 
@@ -55,9 +54,9 @@ class _AcademicStepState extends State<AcademicStep>
     if (!_formKey.currentState!.validate()) return;
     FocusScope.of(context).unfocus();
     final info = AcademicInfo(
-      faculty: _faculty.text,
-      department: _department.text,
-      qualification: _qualification.text,
+      faculty: _faculty ?? '',
+      department: _department ?? '',
+      qualification: _programme ?? '',
       yearOfStudy: _year,
       studyMode: _mode,
       campus: _campus,
@@ -81,26 +80,16 @@ class _AcademicStepState extends State<AcademicStep>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              AppTextField(
-                label: 'Faculty',
-                controller: _faculty,
-                validator: (v) => Validators.required(v, 'Faculty'),
-                textInputAction: TextInputAction.next,
+              AcademicDropdowns(
+                initialFaculty: _faculty,
+                initialDepartment: _department,
+                initialProgramme: _programme,
                 enabled: !loading,
-              ),
-              AppTextField(
-                label: 'Department',
-                controller: _department,
-                validator: (v) => Validators.required(v, 'Department'),
-                textInputAction: TextInputAction.next,
-                enabled: !loading,
-              ),
-              AppTextField(
-                label: 'Qualification / Programme',
-                controller: _qualification,
-                validator: (v) => Validators.required(v, 'Qualification'),
-                textInputAction: TextInputAction.done,
-                enabled: !loading,
+                onChanged: (fac, dept, prog) {
+                  _faculty = fac;
+                  _department = dept;
+                  _programme = prog;
+                },
               ),
               const SizedBox(height: 16),
               ChoiceChipsField<String>(
