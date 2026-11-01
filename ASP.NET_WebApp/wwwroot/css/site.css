@@ -639,20 +639,12 @@ video {
   margin-left: -1.25rem;
 }
 
-.mb-0 {
-  margin-bottom: 0px;
-}
-
 .mb-1 {
   margin-bottom: 0.25rem;
 }
 
 .mb-4 {
   margin-bottom: 1rem;
-}
-
-.me-3 {
-  margin-inline-end: 0.75rem;
 }
 
 .ml-1 {
@@ -679,6 +671,10 @@ video {
   margin-top: 0.5rem;
 }
 
+.mt-20 {
+  margin-top: 5rem;
+}
+
 .mt-3 {
   margin-top: 0.75rem;
 }
@@ -701,10 +697,6 @@ video {
 
 .mt-\[28px\] {
   margin-top: 28px;
-}
-
-.mt-20 {
-  margin-top: 5rem;
 }
 
 .flex {
@@ -735,8 +727,16 @@ video {
   height: 0.75rem;
 }
 
+.h-\[160px\] {
+  height: 160px;
+}
+
 .h-\[170px\] {
   height: 170px;
+}
+
+.h-\[28px\] {
+  height: 28px;
 }
 
 .h-\[calc\(100vh-64px\)\] {
@@ -749,14 +749,6 @@ video {
 
 .h-full {
   height: 100%;
-}
-
-.h-\[160px\] {
-  height: 160px;
-}
-
-.h-\[28px\] {
-  height: 28px;
 }
 
 .min-h-screen {
@@ -787,6 +779,10 @@ video {
   width: 50%;
 }
 
+.w-\[80px\] {
+  width: 80px;
+}
+
 .w-fit {
   width: -moz-fit-content;
   width: fit-content;
@@ -794,10 +790,6 @@ video {
 
 .w-full {
   width: 100%;
-}
-
-.w-\[80px\] {
-  width: 80px;
 }
 
 .min-w-\[220px\] {
@@ -982,12 +974,17 @@ video {
   border-bottom-width: 1px;
 }
 
+.border-b {
+  border-bottom-width: 1px;
+}
+
 .border-r-0 {
   border-right-width: 0px;
 }
 
-.border-b {
-  border-bottom-width: 1px;
+.border-gray-300 {
+  --tw-border-opacity: 1;
+  border-color: rgb(209 213 219 / var(--tw-border-opacity, 1));
 }
 
 .border-gray-400 {
@@ -998,11 +995,6 @@ video {
 .border-white {
   --tw-border-opacity: 1;
   border-color: rgb(255 255 255 / var(--tw-border-opacity, 1));
-}
-
-.border-gray-300 {
-  --tw-border-opacity: 1;
-  border-color: rgb(209 213 219 / var(--tw-border-opacity, 1));
 }
 
 .bg-\[\#001E40\] {
@@ -1057,6 +1049,11 @@ video {
 .bg-\[\#C5C5C5\] {
   --tw-bg-opacity: 1;
   background-color: rgb(197 197 197 / var(--tw-bg-opacity, 1));
+}
+
+.bg-\[\#E3ECFF\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(227 236 255 / var(--tw-bg-opacity, 1));
 }
 
 .bg-\[\#E5EEFF\] {
@@ -1116,20 +1113,6 @@ video {
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
-}
-
-.bg-\[\#E3ECFF\] {
-  --tw-bg-opacity: 1;
-  background-color: rgb(227 236 255 / var(--tw-bg-opacity, 1));
-}
-
-.bg-green-400 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(74 222 128 / var(--tw-bg-opacity, 1));
-}
-
-.p-0 {
-  padding: 0px;
 }
 
 .p-2 {
@@ -1201,16 +1184,16 @@ video {
   padding-left: 1.75rem;
 }
 
+.pr-3 {
+  padding-right: 0.75rem;
+}
+
 .pr-5 {
   padding-right: 1.25rem;
 }
 
 .pt-10 {
   padding-top: 2.5rem;
-}
-
-.pr-3 {
-  padding-right: 0.75rem;
 }
 
 .text-left {
@@ -1256,8 +1239,16 @@ video {
   font-size: 13px;
 }
 
+.text-\[14px\] {
+  font-size: 14px;
+}
+
 .text-\[15px\] {
   font-size: 15px;
+}
+
+.text-\[16px\] {
+  font-size: 16px;
 }
 
 .text-\[17px\] {
@@ -1290,14 +1281,6 @@ video {
 .text-xs {
   font-size: 0.75rem;
   line-height: 1rem;
-}
-
-.text-\[14px\] {
-  font-size: 14px;
-}
-
-.text-\[16px\] {
-  font-size: 16px;
 }
 
 .font-bold {
@@ -1383,6 +1366,16 @@ video {
   color: rgb(37 99 235 / var(--tw-text-opacity, 1));
 }
 
+.text-gray-300 {
+  --tw-text-opacity: 1;
+  color: rgb(209 213 219 / var(--tw-text-opacity, 1));
+}
+
+.text-gray-400 {
+  --tw-text-opacity: 1;
+  color: rgb(156 163 175 / var(--tw-text-opacity, 1));
+}
+
 .text-gray-500 {
   --tw-text-opacity: 1;
   color: rgb(107 114 128 / var(--tw-text-opacity, 1));
@@ -1428,28 +1421,12 @@ video {
   color: rgb(234 179 8 / var(--tw-text-opacity, 1));
 }
 
-.text-gray-300 {
-  --tw-text-opacity: 1;
-  color: rgb(209 213 219 / var(--tw-text-opacity, 1));
-}
-
-.text-gray-400 {
-  --tw-text-opacity: 1;
-  color: rgb(156 163 175 / var(--tw-text-opacity, 1));
-}
-
-.opacity-50 {
-  opacity: 0.5;
-}
-
 .opacity-0 {
   opacity: 0;
 }
 
-.shadow-sm {
-  --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+.opacity-50 {
+  opacity: 0.5;
 }
 
 .backdrop-blur-md {
@@ -1548,10 +1525,6 @@ tr:focus-within .row-actions {
     display: flex;
   }
 
-  .md\:w-\[120\%\] {
-    width: 120%;
-  }
-
   .md\:w-\[50\%\] {
     width: 50%;
   }
@@ -1607,11 +1580,11 @@ tr:focus-within .row-actions {
     width: 50%;
   }
 
-  .lg\:grid-cols-4 {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-
   .lg\:grid-cols-3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
